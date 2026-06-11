@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ATM10 Mod Guide</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">All The Mods 10</p>
+        <h1>ATM10 Mod Guide</h1>
+      </div>
+      <div class="pack-stats" id="packStats"></div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" aria-label="Mod navigation">
+        <label class="field">
+          <span>Jump to mod</span>
+          <select id="modSelect"></select>
+        </label>
+
+        <label class="field">
+          <span>Search</span>
+          <input id="searchInput" type="search" placeholder="AE2, bees, storage..." />
+        </label>
+
+        <div class="filter-row" id="topicFilters"></div>
+        <div class="mod-list" id="modList"></div>
+      </aside>
+
+      <section class="content" aria-live="polite">
+        <section class="hero">
+          <div>
+            <p class="eyebrow" id="packMeta">Loading pack metadata...</p>
+            <h2 id="selectedName">Loading mods...</h2>
+            <p id="selectedSummary"></p>
+          </div>
+          <div class="hero-actions">
+            <a class="button" id="primarySource" href="#" target="_blank" rel="noreferrer">Open source</a>
+            <a class="button secondary" id="tutorialSearch" href="#" target="_blank" rel="noreferrer">Tutorial search</a>
+          </div>
+        </section>
+
+        <section class="meta-grid" id="selectedMeta"></section>
+        <section id="details"></section>
+        <section class="sources-panel">
+          <h3>Sources</h3>
+          <div id="sources"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>

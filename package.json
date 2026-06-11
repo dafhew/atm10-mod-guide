@@ -1,0 +1,14 @@
+{
+  "name": "atm10-mod-guide",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static website guide for the mods included in All The Mods 10.",
+  "scripts": {
+    "build:data": "node scripts/build-data.js",
+    "build:items": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/enrich-items.ps1",
+    "build:split-items": "node scripts/split-items.js",
+    "build:all": "node scripts/build-data.js && powershell -NoProfile -ExecutionPolicy Bypass -File scripts/enrich-items.ps1 && node scripts/split-items.js",
+    "serve": "node server.js",
+    "check": "node --check scripts/build-data.js && node --check server.js && node --check assets/app.js"
+  }
+}
