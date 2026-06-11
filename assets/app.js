@@ -12,7 +12,7 @@ const elements = {
   homeMeta: document.querySelector("#homeMeta"),
   homeGrid: document.querySelector("#homeGrid"),
   categoryStrip: document.querySelector("#categoryStrip"),
-  categoryTools: document.querySelector("#categoryTools"),
+  categoryTools: document.querySelector("#categoryTools") || document.querySelector("#topicFilters"),
   visibleCount: document.querySelector("#visibleCount"),
   modSelect: document.querySelector("#modSelect"),
   searchInput: document.querySelector("#searchInput"),
@@ -96,22 +96,26 @@ function renderStats() {
     .map((item) => `<span class="pill">${escapeHtml(item)}</span>`)
     .join("");
   elements.packMeta.textContent = `${pack.name} ${pack.version} | Minecraft ${pack.minecraftVersion} | ${pack.loader}`;
-  elements.homeMeta.textContent = `${pack.name} ${pack.version} | ${pack.minecraftVersion} | ${pack.loader}`;
-  elements.homeGrid.innerHTML = [
-    ["Mods", pack.counts.mods],
-    ["Items / blocks", pack.counts.itemEntries?.toLocaleString?.() || 0],
-    ["Categories", state.data.topics.length],
-    ["Item files", pack.counts.modsWithItemEntries || 0],
-  ]
-    .map(
-      ([label, value]) => `
-        <div class="home-stat">
-          <span>${escapeHtml(label)}</span>
-          <strong>${escapeHtml(value)}</strong>
-        </div>
-      `
-    )
-    .join("");
+  if (elements.homeMeta) {
+    elements.homeMeta.textContent = `${pack.name} ${pack.version} | ${pack.minecraftVersion} | ${pack.loader}`;
+  }
+  if (elements.homeGrid) {
+    elements.homeGrid.innerHTML = [
+      ["Mods", pack.counts.mods],
+      ["Items / blocks", pack.counts.itemEntries?.toLocaleString?.() || 0],
+      ["Categories", state.data.topics.length],
+      ["Item files", pack.counts.modsWithItemEntries || 0],
+    ]
+      .map(
+        ([label, value]) => `
+          <div class="home-stat">
+            <span>${escapeHtml(label)}</span>
+            <strong>${escapeHtml(value)}</strong>
+          </div>
+        `
+      )
+      .join("");
+  }
 }
 
 function renderSelect() {
@@ -132,29 +136,33 @@ function topicLabel(topic) {
 
 function renderFilters() {
   const filters = ["All", ...state.data.topics, "shader"];
-  elements.categoryTools.innerHTML = filters
-    .map((topic) => {
-      const active = state.topic === topic ? " active" : "";
-      return `<button class="filter${active}" type="button" data-topic="${escapeHtml(topic)}">${escapeHtml(topicLabel(topic))}</button>`;
-    })
-    .join("");
+  if (elements.categoryTools) {
+    elements.categoryTools.innerHTML = filters
+      .map((topic) => {
+        const active = state.topic === topic ? " active" : "";
+        return `<button class="filter${active}" type="button" data-topic="${escapeHtml(topic)}">${escapeHtml(topicLabel(topic))}</button>`;
+      })
+      .join("");
+  }
 
-  elements.categoryStrip.innerHTML = filters
-    .filter((topic) => topic !== "All")
-    .map(
-      (topic) => `
-        <button class="category-card${state.topic === topic ? " active" : ""}" type="button" data-topic="${escapeHtml(topic)}">
-          <span>${escapeHtml(topicLabel(topic))}</span>
-          <strong>${escapeHtml(topicCount(topic))}</strong>
-        </button>
-      `
-    )
-    .join("");
+  if (elements.categoryStrip) {
+    elements.categoryStrip.innerHTML = filters
+      .filter((topic) => topic !== "All")
+      .map(
+        (topic) => `
+          <button class="category-card${state.topic === topic ? " active" : ""}" type="button" data-topic="${escapeHtml(topic)}">
+            <span>${escapeHtml(topicLabel(topic))}</span>
+            <strong>${escapeHtml(topicCount(topic))}</strong>
+          </button>
+        `
+      )
+      .join("");
+  }
 }
 
 function renderList() {
   const mods = filteredMods();
-  elements.visibleCount.textContent = mods.length.toLocaleString();
+  if (elements.visibleCount) elements.visibleCount.textContent = mods.length.toLocaleString();
   if (!mods.length) {
     elements.modList.innerHTML = '<div class="empty">No mods match the current filters.</div>';
     return;
@@ -361,7 +369,7 @@ function bindEvents() {
     renderList();
     if (!mods.some((mod) => mod.id === state.selectedId)) setSelected(mods[0]?.id);
   });
-  elements.categoryTools.addEventListener("click", (event) => {
+  elements.categoryTools?.addEventListener("click", (event) => {
     const button = event.target.closest("[data-topic]");
     if (!button) return;
     state.topic = button.dataset.topic;
@@ -370,7 +378,7 @@ function bindEvents() {
     const mods = filteredMods();
     if (!mods.some((mod) => mod.id === state.selectedId)) setSelected(mods[0]?.id);
   });
-  elements.categoryStrip.addEventListener("click", (event) => {
+  elements.categoryStrip?.addEventListener("click", (event) => {
     const button = event.target.closest("[data-topic]");
     if (!button) return;
     state.topic = button.dataset.topic;
