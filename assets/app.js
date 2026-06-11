@@ -9,9 +9,13 @@ const state = {
 const elements = {
   packStats: document.querySelector("#packStats"),
   packMeta: document.querySelector("#packMeta"),
+  homeMeta: document.querySelector("#homeMeta"),
+  homeGrid: document.querySelector("#homeGrid"),
+  categoryStrip: document.querySelector("#categoryStrip"),
+  categoryTools: document.querySelector("#categoryTools"),
+  visibleCount: document.querySelector("#visibleCount"),
   modSelect: document.querySelector("#modSelect"),
   searchInput: document.querySelector("#searchInput"),
-  topicFilters: document.querySelector("#topicFilters"),
   modList: document.querySelector("#modList"),
   selectedName: document.querySelector("#selectedName"),
   selectedSummary: document.querySelector("#selectedSummary"),
@@ -92,6 +96,22 @@ function renderStats() {
     .map((item) => `<span class="pill">${escapeHtml(item)}</span>`)
     .join("");
   elements.packMeta.textContent = `${pack.name} ${pack.version} | Minecraft ${pack.minecraftVersion} | ${pack.loader}`;
+  elements.homeMeta.textContent = `${pack.name} ${pack.version} | ${pack.minecraftVersion} | ${pack.loader}`;
+  elements.homeGrid.innerHTML = [
+    ["Mods", pack.counts.mods],
+    ["Items / blocks", pack.counts.itemEntries?.toLocaleString?.() || 0],
+    ["Categories", state.data.topics.length],
+    ["Item files", pack.counts.modsWithItemEntries || 0],
+  ]
+    .map(
+      ([label, value]) => `
+        <div class="home-stat">
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(value)}</strong>
+        </div>
+      `
+    )
+    .join("");
 }
 
 function renderSelect() {
@@ -100,35 +120,81 @@ function renderSelect() {
     .join("");
 }
 
+function topicCount(topic) {
+  if (topic === "All") return state.data.mods.length;
+  if (topic === "shader") return state.data.mods.filter((mod) => mod.type === "shader").length;
+  return state.data.mods.filter((mod) => mod.topic === topic).length;
+}
+
+function topicLabel(topic) {
+  return topic === "shader" ? "Included packs" : topic;
+}
+
 function renderFilters() {
   const filters = ["All", ...state.data.topics, "shader"];
-  elements.topicFilters.innerHTML = filters
+  elements.categoryTools.innerHTML = filters
     .map((topic) => {
-      const label = topic === "shader" ? "Included packs" : topic;
       const active = state.topic === topic ? " active" : "";
-      return `<button class="filter${active}" type="button" data-topic="${escapeHtml(topic)}">${escapeHtml(label)}</button>`;
+      return `<button class="filter${active}" type="button" data-topic="${escapeHtml(topic)}">${escapeHtml(topicLabel(topic))}</button>`;
     })
+    .join("");
+
+  elements.categoryStrip.innerHTML = filters
+    .filter((topic) => topic !== "All")
+    .map(
+      (topic) => `
+        <button class="category-card${state.topic === topic ? " active" : ""}" type="button" data-topic="${escapeHtml(topic)}">
+          <span>${escapeHtml(topicLabel(topic))}</span>
+          <strong>${escapeHtml(topicCount(topic))}</strong>
+        </button>
+      `
+    )
     .join("");
 }
 
 function renderList() {
   const mods = filteredMods();
+  elements.visibleCount.textContent = mods.length.toLocaleString();
   if (!mods.length) {
     elements.modList.innerHTML = '<div class="empty">No mods match the current filters.</div>';
     return;
   }
 
-  elements.modList.innerHTML = mods
-    .map((mod) => {
-      const active = mod.id === state.selectedId ? " active" : "";
+  const groups = new Map();
+  for (const mod of mods) {
+    const key = mod.type === "shader" ? "Included packs" : mod.topic;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(mod);
+  }
+
+  elements.modList.innerHTML = [...groups.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([topic, entries], index) => {
+      const containsSelected = entries.some((mod) => mod.id === state.selectedId);
       return `
-        <button class="mod-button${active}" type="button" data-id="${escapeHtml(mod.id)}">
-          <strong>${escapeHtml(mod.name)}</strong>
-          <span>${escapeHtml(mod.topic)} | ${escapeHtml(mod.installedVersion)}</span>
-        </button>
+        <details class="category-group" ${containsSelected || index === 0 ? "open" : ""}>
+          <summary>
+            <span>${escapeHtml(topic)}</span>
+            <strong>${escapeHtml(entries.length)}</strong>
+          </summary>
+          <div class="mod-list">
+            ${entries.map(renderModButton).join("")}
+          </div>
+        </details>
       `;
     })
     .join("");
+}
+
+function renderModButton(mod) {
+  const active = mod.id === state.selectedId ? " active" : "";
+  const itemCount = mod.itemCount ? ` | ${Number(mod.itemCount).toLocaleString()} items` : "";
+  return `
+    <button class="mod-button${active}" type="button" data-id="${escapeHtml(mod.id)}">
+      <strong>${escapeHtml(mod.name)}</strong>
+      <span>${escapeHtml(mod.installedVersion)}${escapeHtml(itemCount)}</span>
+    </button>
+  `;
 }
 
 function metaItem(label, value) {
@@ -295,7 +361,16 @@ function bindEvents() {
     renderList();
     if (!mods.some((mod) => mod.id === state.selectedId)) setSelected(mods[0]?.id);
   });
-  elements.topicFilters.addEventListener("click", (event) => {
+  elements.categoryTools.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-topic]");
+    if (!button) return;
+    state.topic = button.dataset.topic;
+    renderFilters();
+    renderList();
+    const mods = filteredMods();
+    if (!mods.some((mod) => mod.id === state.selectedId)) setSelected(mods[0]?.id);
+  });
+  elements.categoryStrip.addEventListener("click", (event) => {
     const button = event.target.closest("[data-topic]");
     if (!button) return;
     state.topic = button.dataset.topic;

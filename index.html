@@ -8,15 +8,23 @@
   </head>
   <body>
     <header class="topbar">
-      <div>
-        <p class="eyebrow">All The Mods 10</p>
-        <h1>ATM10 Mod Guide</h1>
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div>
+          <p class="eyebrow">All The Mods 10</p>
+          <h1>ATM10 Mod Guide</h1>
+        </div>
       </div>
       <div class="pack-stats" id="packStats"></div>
     </header>
 
     <main class="layout">
       <aside class="sidebar" aria-label="Mod navigation">
+        <div class="sidebar-title">
+          <span>Mod Index</span>
+          <strong id="visibleCount">0</strong>
+        </div>
+
         <label class="field">
           <span>Jump to mod</span>
           <select id="modSelect"></select>
@@ -27,11 +35,22 @@
           <input id="searchInput" type="search" placeholder="AE2, bees, storage..." />
         </label>
 
-        <div class="filter-row" id="topicFilters"></div>
-        <div class="mod-list" id="modList"></div>
+        <div class="category-tools" id="categoryTools"></div>
+        <div class="category-list" id="modList"></div>
       </aside>
 
       <section class="content" aria-live="polite">
+        <section class="home-hero">
+          <div class="home-copy">
+            <p class="eyebrow" id="homeMeta">ATM10 field guide</p>
+            <h2>All The Mods 10, organized for actual play.</h2>
+            <p>Browse every included mod, open collapsible categories, and drill into tutorials, sources, and item/block details from the installed pack.</p>
+          </div>
+          <div class="home-grid" id="homeGrid"></div>
+        </section>
+
+        <section class="category-strip" id="categoryStrip"></section>
+
         <section class="hero">
           <div>
             <p class="eyebrow" id="packMeta">Loading pack metadata...</p>
