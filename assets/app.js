@@ -160,6 +160,34 @@ function renderLinkedList(items, currentTarget = null) {
     .join("");
 }
 
+function findEntryById(id, fallbackModId = state.selectedId) {
+  return (
+    state.searchIndex.find((entry) => entry.id === id && entry.modId === fallbackModId) ||
+    state.searchIndex.find((entry) => entry.id === id)
+  );
+}
+
+function renderGuideLink(label, target) {
+  return `<a class="guide-link" href="#" data-guide-link="1" data-target-type="${escapeHtml(target.type)}" data-target-mod-id="${escapeHtml(target.modId)}" data-target-id="${escapeHtml(target.type === "boss" ? target.name : target.id)}">${escapeHtml(label)}</a>`;
+}
+
+function renderRecipeReference(value, currentTarget) {
+  const text = String(value ?? "");
+  const match = text.match(/^(.*?)(\s*\(([a-z0-9_.-]+:[a-z0-9_./-]+)\))$/i);
+  if (!match) return renderLinkedText(text, currentTarget);
+
+  const [, prefix, suffix, id] = match;
+  const entry = findEntryById(id);
+  if (!entry || !["item", "block"].includes(entry.type)) return escapeHtml(text);
+
+  const nameMatch = prefix.match(/^((?:\d+\s*x\s+)|(?:.+?=\s*)|(?:.+?:\s*))?(.+?)\s*$/i);
+  if (!nameMatch) return `${renderGuideLink(prefix.trim(), entry)}${escapeHtml(suffix)}`;
+
+  const leading = nameMatch[1] || "";
+  const name = nameMatch[2].trim();
+  return `${escapeHtml(leading)}${renderGuideLink(name, entry)}${escapeHtml(suffix)}`;
+}
+
 function getBossDropsForItem(item) {
   const keys = new Set([normalizeKey(item.name), normalizeKey(item.id?.split(":").pop()?.replace(/_/g, " "))].filter(Boolean));
   const drops = [];
@@ -649,7 +677,7 @@ function renderRecipe(recipe, currentTarget) {
     <div class="recipe-card">
       <div class="recipe-title">
         <strong>${escapeHtml(recipe.type || "recipe")}</strong>
-        ${recipe.result ? `<span>${renderLinkedText(recipe.result, currentTarget)}</span>` : ""}
+        ${recipe.result ? `<span>${renderRecipeReference(recipe.result, currentTarget)}</span>` : ""}
       </div>
       ${
         pattern.length
@@ -664,7 +692,7 @@ function renderRecipe(recipe, currentTarget) {
         key.length
           ? `
             <ul class="recipe-ingredients">
-              ${key.map((entry) => `<li>${renderLinkedText(entry, currentTarget)}</li>`).join("")}
+              ${key.map((entry) => `<li>${renderRecipeReference(entry, currentTarget)}</li>`).join("")}
             </ul>
           `
           : ""
@@ -673,12 +701,11 @@ function renderRecipe(recipe, currentTarget) {
         ingredients.length
           ? `
             <ul class="recipe-ingredients">
-              ${ingredients.map((entry) => `<li>${renderLinkedText(entry, currentTarget)}</li>`).join("")}
+              ${ingredients.map((entry) => `<li>${renderRecipeReference(entry, currentTarget)}</li>`).join("")}
             </ul>
           `
           : ""
       }
-      ${recipe.source ? `<span class="recipe-source">${escapeHtml(recipe.source)}</span>` : ""}
     </div>
   `;
 }

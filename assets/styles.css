@@ -800,8 +800,7 @@ button:focus,
   text-transform: capitalize;
 }
 
-.recipe-title span,
-.recipe-source {
+.recipe-title span {
   color: var(--muted);
   font-size: 0.78rem;
   overflow-wrap: anywhere;
