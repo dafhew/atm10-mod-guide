@@ -1,5 +1,6 @@
 const state = {
   data: null,
+  bossData: {},
   selectedId: null,
   topic: "All",
   query: "",
@@ -60,6 +61,9 @@ function matches(mod) {
     mod.modId,
     mod.author,
     mod.itemSearch,
+    state.bossData[mod.id]?.bosses
+      ?.map((boss) => [boss.name, boss.find?.join(" "), boss.drops?.map((drop) => `${drop.name} ${drop.use}`).join(" ")].join(" "))
+      .join(" "),
     mod.sources?.map((source) => source.label).join(" "),
   ]
     .join(" ")
@@ -197,10 +201,12 @@ function renderList() {
 function renderModButton(mod) {
   const active = mod.id === state.selectedId ? " active" : "";
   const itemCount = mod.itemCount ? ` | ${Number(mod.itemCount).toLocaleString()} items` : "";
+  const bossCount = state.bossData[mod.id]?.bosses?.length;
+  const bossLabel = bossCount ? ` | ${bossCount} boss${bossCount === 1 ? "" : "es"}` : "";
   return `
     <button class="mod-button${active}" type="button" data-id="${escapeHtml(mod.id)}">
       <strong>${escapeHtml(mod.name)}</strong>
-      <span>${escapeHtml(mod.installedVersion)}${escapeHtml(itemCount)}</span>
+      <span>${escapeHtml(mod.installedVersion)}${escapeHtml(itemCount)}${escapeHtml(bossLabel)}</span>
     </button>
   `;
 }
@@ -251,6 +257,7 @@ function renderSelected(mod) {
         </details>
       `;
     }),
+    renderBossesSection(mod),
     renderItemsSection(mod, state.itemCache.get(mod.id)),
   ].join("");
 
@@ -269,6 +276,72 @@ function renderSelected(mod) {
         if (state.selectedId === mod.id) renderSelected(mod);
       });
   }
+}
+
+function renderTextList(items) {
+  return asArray(items)
+    .map((item) => `<li>${escapeHtml(item)}</li>`)
+    .join("");
+}
+
+function renderDrop(drop) {
+  return `
+    <li>
+      <strong>${escapeHtml(drop.name)}</strong>
+      ${drop.use ? `<span>${escapeHtml(drop.use)}</span>` : ""}
+    </li>
+  `;
+}
+
+function renderBossCard(boss) {
+  const drops = asArray(boss.drops);
+  const special = asArray(boss.special);
+  return `
+    <article class="boss-card">
+      <div class="boss-image-frame">
+        <img src="${escapeHtml(boss.image)}" alt="${escapeHtml(boss.imageAlt || boss.name)}" loading="lazy" />
+      </div>
+      <div class="boss-content">
+        <h4>${escapeHtml(boss.name)}</h4>
+        <dl>
+          <dt>How to find</dt>
+          <dd><ul>${renderTextList(boss.find)}</ul></dd>
+          <dt>Drops</dt>
+          <dd>
+            <ul class="drop-list">
+              ${drops.length ? drops.map(renderDrop).join("") : "<li>No direct entity drops were found in the installed loot table; check structure chests and JEI/EMI.</li>"}
+            </ul>
+          </dd>
+          ${
+            special.length
+              ? `
+                <dt>Special notes</dt>
+                <dd><ul>${renderTextList(special)}</ul></dd>
+              `
+              : ""
+          }
+        </dl>
+      </div>
+    </article>
+  `;
+}
+
+function renderBossesSection(mod) {
+  const entry = state.bossData[mod.id];
+  const bosses = asArray(entry?.bosses);
+  if (!bosses.length) return "";
+
+  return `
+    <details open>
+      <summary>Bosses (${escapeHtml(bosses.length.toLocaleString())})</summary>
+      <div class="detail-body">
+        ${entry.intro ? `<p>${escapeHtml(entry.intro)}</p>` : ""}
+        <div class="boss-grid">
+          ${bosses.map(renderBossCard).join("")}
+        </div>
+      </div>
+    </details>
+  `;
 }
 
 async function loadItems(mod) {
@@ -394,9 +467,13 @@ function bindEvents() {
 }
 
 async function init() {
-  const response = await fetch("data/mods.json", { cache: "no-store" });
-  if (!response.ok) throw new Error("Could not load data/mods.json. Run npm run build:data first.");
-  state.data = await response.json();
+  const [modsResponse, bossesResponse] = await Promise.all([
+    fetch("data/mods.json", { cache: "no-store" }),
+    fetch("data/bosses.json", { cache: "no-store" }),
+  ]);
+  if (!modsResponse.ok) throw new Error("Could not load data/mods.json. Run npm run build:data first.");
+  state.data = await modsResponse.json();
+  state.bossData = bossesResponse.ok ? await bossesResponse.json() : {};
   renderStats();
   renderSelect();
   renderFilters();

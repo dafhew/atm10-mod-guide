@@ -1,0 +1,827 @@
+{
+  "allthemodium-364466": {
+    "intro": "ATM10-specific endgame encounter. Drops are from the installed Allthemodium entity loot table; check JEI/EMI for any pack script changes.",
+    "bosses": [
+      {
+        "name": "Piglich",
+        "image": "assets/bosses/piglich.png",
+        "find": [
+          "Travel to ATM's The Other dimension and search pyramid structures.",
+          "Pigliches are neutral until provoked but have very high health, so bring late-game armor, flight, and a recovery plan."
+        ],
+        "drops": [
+          {
+            "name": "Piglich Heart",
+            "use": "Endgame Allthemodium material used in ATM progression recipes; JEI/EMI shows the exact ATM10 uses."
+          }
+        ],
+        "special": [
+          "Piglich Heart is the important reward. Treat it as a progression ingredient, not a generic trophy drop."
+        ]
+      }
+    ]
+  },
+  "l-ender-s-cataclysm-551586": {
+    "intro": "Cataclysm is the densest boss mod in this pack. Its locator eyes and structure names are present in the installed jar.",
+    "bosses": [
+      {
+        "name": "Ender Guardian",
+        "image": "assets/bosses/cataclysm-ender-guardian.png",
+        "find": [
+          "Use Cataclysm's Eye of Ruined to locate a Ruined Citadel in The End.",
+          "Clear the citadel carefully; the arena is designed for a full boss fight, not a quick mob kill."
+        ],
+        "drops": [
+          {
+            "name": "Gauntlet of Guard",
+            "use": "Unique Cataclysm weapon/tool reward with guard-themed combat utility."
+          },
+          {
+            "name": "Music Disc - Ender Guardian",
+            "use": "Collectible boss music disc."
+          }
+        ],
+        "special": [
+          "The gauntlet is the special drop. Use JEI/EMI to compare it with the other Cataclysm gauntlets before building around it."
+        ]
+      },
+      {
+        "name": "Netherite Monstrosity",
+        "image": "assets/bosses/cataclysm-netherite-monstrosity.png",
+        "find": [
+          "Use Eye of Monstrous to locate the Soul Black Smith structure in the Nether.",
+          "Expect lava, fire damage, heavy melee hits, and arena pressure."
+        ],
+        "drops": [
+          {
+            "name": "Infernal Forge",
+            "use": "Heavy Cataclysm hammer-style weapon reward."
+          },
+          {
+            "name": "Monstrous Horn",
+            "use": "Rare boss material or combat reward; check JEI/EMI for ATM10 recipes."
+          },
+          {
+            "name": "Lava Power Cell",
+            "use": "Cataclysm reward item from the entity table."
+          }
+        ],
+        "special": [
+          "Infernal Forge and Monstrous Horn are the important unique drops from this fight."
+        ]
+      },
+      {
+        "name": "Ignis",
+        "image": "assets/bosses/cataclysm-ignis.png",
+        "find": [
+          "Use Eye of Flame to locate the Burning Arena.",
+          "Prepare fire resistance, strong ranged options, and mobility for a long duel."
+        ],
+        "drops": [
+          {
+            "name": "Ignitium Ingot",
+            "use": "Crafts Cataclysm's Ignitium gear and upgrades."
+          },
+          {
+            "name": "Music Disc - Ignis",
+            "use": "Collectible boss music disc."
+          }
+        ],
+        "special": [
+          "Ignitium is the progression material. It feeds the armor/tool path rather than acting as a simple decoration."
+        ]
+      },
+      {
+        "name": "The Harbinger",
+        "image": "assets/bosses/cataclysm-harbinger.png",
+        "find": [
+          "Use Eye of Mech to locate the Ancient Factory.",
+          "Bring wither protection or cleansing options and enough damage for a mechanical boss arena."
+        ],
+        "drops": [
+          {
+            "name": "Block of Witherite",
+            "use": "Compressed Witherite reward used for Cataclysm progression crafting."
+          },
+          {
+            "name": "Music Disc - The Harbinger",
+            "use": "Collectible boss music disc."
+          }
+        ],
+        "special": [
+          "Witherite is the special reward chain. Break it down or use it in recipes as JEI/EMI indicates."
+        ]
+      },
+      {
+        "name": "The Leviathan",
+        "image": "assets/bosses/cataclysm-leviathan.png",
+        "find": [
+          "Use Eye of Abyss to locate the Sunken City.",
+          "Fight in or around water; the installed language file notes the Leviathan is invincible outside water."
+        ],
+        "drops": [
+          {
+            "name": "Tidal Claws",
+            "use": "Unique aquatic-themed Cataclysm weapon reward."
+          },
+          {
+            "name": "Abyssal Egg",
+            "use": "Special Leviathan reward item tied to Cataclysm progression."
+          },
+          {
+            "name": "Music Disc - The Leviathan",
+            "use": "Collectible boss music disc."
+          }
+        ],
+        "special": [
+          "Tidal Claws and Abyssal Egg are the special rewards; keep the fight in water so the boss can actually be damaged."
+        ]
+      },
+      {
+        "name": "Ancient Remnant",
+        "image": "assets/bosses/cataclysm-ancient-remnant.png",
+        "find": [
+          "Use Eye of Desert to locate the Cursed Pyramid.",
+          "Prepare for desert structure hazards and burst damage."
+        ],
+        "drops": [
+          {
+            "name": "Sandstorm in a Bottle",
+            "use": "Special Cataclysm utility/combat reward."
+          },
+          {
+            "name": "Remnant's Skull",
+            "use": "Boss trophy-style reward and recipe material where enabled."
+          },
+          {
+            "name": "Ancient Metal Block",
+            "use": "Ancient Metal storage/progression material."
+          }
+        ],
+        "special": [
+          "Sandstorm in a Bottle is the signature special drop."
+        ]
+      },
+      {
+        "name": "Kobolediator",
+        "image": "assets/bosses/cataclysm-kobolediator.png",
+        "find": [
+          "Use Eye of Storm to locate the Acropolis.",
+          "The fight is melee-heavy; clear surrounding mobs before committing."
+        ],
+        "drops": [
+          {
+            "name": "Kobolediator Skull",
+            "use": "Boss skull/trophy reward."
+          },
+          {
+            "name": "Ancient Metal Ingot",
+            "use": "Cataclysm crafting material."
+          },
+          {
+            "name": "Koboleton Bone",
+            "use": "Cataclysm material drop used by related recipes."
+          }
+        ],
+        "special": [
+          "The skull is the unique trophy; Ancient Metal is the practical crafting reward."
+        ]
+      },
+      {
+        "name": "Maledictus",
+        "image": "assets/bosses/cataclysm-maledictus.png",
+        "find": [
+          "Use Eye of Curse to locate the Frosted Prison.",
+          "Bring cold-area travel supplies, strong armor, and a way to handle curse-themed attacks."
+        ],
+        "drops": [
+          {
+            "name": "Cursium Ingot",
+            "use": "Crafts Cataclysm's Cursium equipment path."
+          },
+          {
+            "name": "Music Disc - Maledictus",
+            "use": "Collectible boss music disc."
+          }
+        ],
+        "special": [
+          "Cursium is the special progression material from this fight."
+        ]
+      },
+      {
+        "name": "The Prowler",
+        "image": "assets/bosses/cataclysm-prowler.png",
+        "find": [
+          "Found in Ancient Factory content alongside Cataclysm's mechanical encounter chain.",
+          "Use Eye of Mech or an Explorer's Compass search for Cataclysm structures if you need to target it."
+        ],
+        "drops": [
+          {
+            "name": "Iron Ingot",
+            "use": "Common material."
+          },
+          {
+            "name": "Redstone",
+            "use": "Common redstone material."
+          }
+        ],
+        "special": [
+          "The installed loot table only shows common drops, so treat this as a dangerous structure encounter rather than a special loot boss."
+        ]
+      }
+    ]
+  },
+  "the-twilight-forest-227639": {
+    "intro": "Twilight Forest bosses are usually progression gates. Follow the biome/structure order or the mod may apply progression protections.",
+    "bosses": [
+      {
+        "name": "Naga",
+        "image": "assets/bosses/twilight-naga.png",
+        "find": [
+          "Enter the Twilight Forest and locate a Naga Courtyard.",
+          "This is normally the first Twilight Forest boss."
+        ],
+        "drops": [
+          {
+            "name": "Naga Scales",
+            "use": "Craft Naga Scale armor."
+          },
+          {
+            "name": "Naga Trophy",
+            "use": "Progression/trophy item used for display and boss completion."
+          }
+        ],
+        "special": [
+          "Naga Scales are the practical reward; the trophy marks completion."
+        ]
+      },
+      {
+        "name": "Twilight Lich",
+        "image": "assets/bosses/twilight-lich.png",
+        "find": [
+          "Find a Lich Tower after defeating the Naga.",
+          "Break through the tower and fight through shield and clone phases."
+        ],
+        "drops": [
+          {
+            "name": "Twilight, Zombie, Life Draining, or Fortification Scepter",
+            "use": "Magic scepters with combat or defensive spell effects."
+          },
+          {
+            "name": "Lich Trophy",
+            "use": "Progression/trophy item."
+          },
+          {
+            "name": "Ender Pearls, bones, and golden gear",
+            "use": "Secondary loot."
+          }
+        ],
+        "special": [
+          "The scepter is the special drop; each scepter has a different active effect."
+        ]
+      },
+      {
+        "name": "Minoshroom",
+        "image": "assets/bosses/twilight-minoshroom.png",
+        "find": [
+          "Find a Labyrinth in the Twilight Forest swamp progression area.",
+          "Search the lower labyrinth level for the boss room."
+        ],
+        "drops": [
+          {
+            "name": "Diamond Minotaur Axe",
+            "use": "Heavy melee axe reward."
+          },
+          {
+            "name": "Meef Stroganoff",
+            "use": "Progression food used to move into the fire swamp path."
+          },
+          {
+            "name": "Minoshroom Trophy",
+            "use": "Progression/trophy item."
+          }
+        ],
+        "special": [
+          "Meef Stroganoff is a progression item, not just food."
+        ]
+      },
+      {
+        "name": "Hydra",
+        "image": "assets/bosses/twilight-hydra.png",
+        "find": [
+          "Find a Hydra Lair in the Fire Swamp after the swamp progression steps.",
+          "Bring fire resistance and ranged damage."
+        ],
+        "drops": [
+          {
+            "name": "Fiery Blood",
+            "use": "Crafts Fiery equipment and Fiery Ingots."
+          },
+          {
+            "name": "Hydra Chop",
+            "use": "Powerful food reward."
+          },
+          {
+            "name": "Hydra Trophy",
+            "use": "Progression/trophy item."
+          }
+        ],
+        "special": [
+          "Fiery Blood is the key crafting reward for the Fiery gear path."
+        ]
+      },
+      {
+        "name": "Knight Phantom",
+        "image": "assets/bosses/twilight-knight-phantom.png",
+        "find": [
+          "Find a Knight Stronghold in the Dark Forest progression area.",
+          "Unlock and clear the stronghold, then fight the phantom group."
+        ],
+        "drops": [
+          {
+            "name": "Phantom Helmet and Phantom Chestplate",
+            "use": "Unique armor pieces."
+          },
+          {
+            "name": "Knightmetal Axe, Pickaxe, or Sword",
+            "use": "Knightmetal tools and weapons."
+          }
+        ],
+        "special": [
+          "The Phantom armor pieces are the unique boss rewards."
+        ]
+      },
+      {
+        "name": "Ur-Ghast",
+        "image": "assets/bosses/twilight-ur-ghast.png",
+        "find": [
+          "Find the Dark Tower after clearing Dark Forest progression.",
+          "Climb to the tower top and use tower ghast traps to control the fight."
+        ],
+        "drops": [
+          {
+            "name": "Fiery Tears",
+            "use": "Fiery crafting material."
+          },
+          {
+            "name": "Carminite",
+            "use": "Dark Tower progression/crafting material."
+          },
+          {
+            "name": "Ur-Ghast Trophy",
+            "use": "Progression/trophy item."
+          }
+        ],
+        "special": [
+          "Fiery Tears are the special crafting reward from the tower boss."
+        ]
+      },
+      {
+        "name": "Alpha Yeti",
+        "image": "assets/bosses/twilight-alpha-yeti.png",
+        "find": [
+          "Find a Yeti Cave in the Snowy Forest progression area.",
+          "Fight in the cave and watch for grab and throw attacks."
+        ],
+        "drops": [
+          {
+            "name": "Alpha Yeti Fur",
+            "use": "Crafts cold-progression gear."
+          },
+          {
+            "name": "Ice Bombs",
+            "use": "Throwable cold utility/combat item."
+          },
+          {
+            "name": "Alpha Yeti Trophy",
+            "use": "Progression/trophy item."
+          }
+        ],
+        "special": [
+          "Alpha Yeti Fur is the progression material toward the Snow Queen path."
+        ]
+      },
+      {
+        "name": "Snow Queen",
+        "image": "assets/bosses/twilight-snow-queen.png",
+        "find": [
+          "Find the Aurora Palace after the snow progression steps.",
+          "Climb to the top and fight through ice, flight, and bow phases."
+        ],
+        "drops": [
+          {
+            "name": "Seeker Bow or Tri-Bow",
+            "use": "Unique bow rewards with special firing behavior."
+          },
+          {
+            "name": "Snow Queen Trophy",
+            "use": "Progression/trophy item."
+          },
+          {
+            "name": "Packed Ice and snowballs",
+            "use": "Secondary loot."
+          }
+        ],
+        "special": [
+          "The bow drop is the special reward; Seeker Bow and Tri-Bow play differently."
+        ]
+      }
+    ]
+  },
+  "the-aether-255308": {
+    "intro": "Aether bosses are tied to Bronze, Silver, and Gold dungeon structures in the Aether dimension.",
+    "bosses": [
+      {
+        "name": "Slider",
+        "image": "assets/bosses/aether-slider.png",
+        "find": [
+          "Search the Aether for a Bronze Dungeon.",
+          "Mine/attack the Slider according to the dungeon rules, then use the key on the reward chest."
+        ],
+        "drops": [
+          {
+            "name": "Bronze Dungeon Key",
+            "use": "Opens the Bronze Dungeon reward chest."
+          },
+          {
+            "name": "Carved Stone",
+            "use": "Dungeon building block drop."
+          }
+        ],
+        "special": [
+          "The key is the actual boss reward because it unlocks the treasure chest."
+        ]
+      },
+      {
+        "name": "Valkyrie Queen",
+        "image": "assets/bosses/aether-valkyrie-queen.png",
+        "find": [
+          "Search the Aether for a Silver Dungeon.",
+          "Collect victory medals from Valkyries, then challenge the Queen."
+        ],
+        "drops": [
+          {
+            "name": "Silver Dungeon Key",
+            "use": "Opens the Silver Dungeon reward chest."
+          },
+          {
+            "name": "Golden Sword",
+            "use": "Secondary loot."
+          }
+        ],
+        "special": [
+          "The Silver Dungeon Key unlocks the real loot chest after the fight."
+        ]
+      },
+      {
+        "name": "Sun Spirit",
+        "image": "assets/bosses/aether-sun-spirit.png",
+        "find": [
+          "Search the Aether for a Gold Dungeon.",
+          "Reach the boss room and interact/challenge the Sun Spirit."
+        ],
+        "drops": [
+          {
+            "name": "Gold Dungeon Key",
+            "use": "Opens the Gold Dungeon reward chest."
+          },
+          {
+            "name": "Sun Altar",
+            "use": "Aether utility block associated with time/daylight control."
+          }
+        ],
+        "special": [
+          "The Gold Dungeon Key is the progression reward; use it on the dungeon chest."
+        ]
+      }
+    ]
+  },
+  "deeper-and-darker-659011": {
+    "intro": "Deeper and Darker has one major named boss-style encounter in the installed loot tables.",
+    "bosses": [
+      {
+        "name": "Stalker",
+        "image": "assets/bosses/deeperdarker-stalker.png",
+        "find": [
+          "Enter Deeper and Darker's sculk dimension/content and search sculk-heavy structures or deep areas.",
+          "Use Explorer's Compass or the mod's advancements if you need to target the structure in ATM10."
+        ],
+        "drops": [
+          {
+            "name": "Soul Crystal",
+            "use": "Deeper and Darker progression/crafting material."
+          }
+        ],
+        "special": [
+          "Soul Crystal is the important drop from the installed entity loot table."
+        ]
+      }
+    ]
+  },
+  "the-undergarden-379849": {
+    "intro": "The Undergarden's boss progression centers on the Forgotten Guardian.",
+    "bosses": [
+      {
+        "name": "Forgotten Guardian",
+        "image": "assets/bosses/undergarden-forgotten-guardian.png",
+        "find": [
+          "Enter The Undergarden and find Catacombs/Forgotten Halls progression content.",
+          "The installed advancements explicitly track slaying a Forgotten Guardian."
+        ],
+        "drops": [
+          {
+            "name": "Forgotten Nugget",
+            "use": "Combine into Forgotten Ingots for Forgotten tools and upgrades."
+          }
+        ],
+        "special": [
+          "Forgotten metal upgrades Cloggrum tools and supports the Forgotten equipment path."
+        ]
+      }
+    ]
+  },
+  "eternal-starlight-1080592": {
+    "intro": "Eternal Starlight uses dimension structures and its in-game book for boss guidance. The structures below are present in the installed worldgen data.",
+    "bosses": [
+      {
+        "name": "The Gatekeeper",
+        "image": "assets/bosses/eternal-gatekeeper.png",
+        "find": [
+          "Enter Eternal Starlight through portal ruins, then progress until you can challenge the Gatekeeper.",
+          "The installed language file includes challenge, rematch, and trade dialogue for this encounter."
+        ],
+        "drops": [
+          {
+            "name": "Trade access / progression",
+            "use": "Defeating or proving yourself to the Gatekeeper unlocks further interaction and trading."
+          }
+        ],
+        "special": [
+          "This is a progression encounter more than a normal loot pinata; talk to the Gatekeeper after winning."
+        ]
+      },
+      {
+        "name": "Starlight Golem",
+        "image": "assets/bosses/eternal-starlight-golem.png",
+        "find": [
+          "Find a Golem Forge structure in the Eternal Starlight dimension.",
+          "The in-game book notes its armor weakens when it stops to absorb energy."
+        ],
+        "drops": [
+          {
+            "name": "Forge/golem progression loot",
+            "use": "Check the structure chest and JEI/EMI uses for golem-related materials in ATM10."
+          }
+        ],
+        "special": [
+          "Its special mechanic is defensive armor: disable the energy support when it exposes the weakness."
+        ]
+      },
+      {
+        "name": "Lunar Monstrosity",
+        "image": "assets/bosses/eternal-lunar-monstrosity.png",
+        "find": [
+          "Find a Cursed Garden structure in Eternal Starlight.",
+          "The in-game book says it loses damage reduction while ignited or stunned."
+        ],
+        "drops": [
+          {
+            "name": "Cursed Garden progression loot",
+            "use": "Use JEI/EMI and the Eternal Starlight guide book to verify the ATM10 reward path."
+          }
+        ],
+        "special": [
+          "The important mechanic is its damage reduction. Ignite or stun it before spending your strongest attacks."
+        ]
+      }
+    ]
+  },
+  "the-bumblezone-neoforge-forge-362479": {
+    "intro": "Bumblezone's Queen is more quest/trade encounter than normal boss. The installed loot table exists, but the useful rewards come from interacting with her systems.",
+    "bosses": [
+      {
+        "name": "Bee Queen",
+        "image": "assets/bosses/bumblezone-bee-queen.png",
+        "find": [
+          "Enter The Bumblezone and search hive/queen structure content.",
+          "Follow Queen's Desire advancement prompts and interact with the Queen rather than treating her as a normal farm mob."
+        ],
+        "drops": [
+          {
+            "name": "Bee Stinger",
+            "use": "Bee-themed material used by Bumblezone items and systems."
+          },
+          {
+            "name": "Quest/trade rewards",
+            "use": "Bonus trades and Queen's Desire rewards are the meaningful progression path."
+          }
+        ],
+        "special": [
+          "The Queen can request items and grant bonus trade rewards. Killing her is usually less useful than completing her interaction loop."
+        ]
+      }
+    ]
+  },
+  "iceandfire-community-edition-1040076": {
+    "intro": "Ice and Fire adds dangerous world bosses and boss-like legendary creatures. Loot varies by age, type, and sex for dragons.",
+    "bosses": [
+      {
+        "name": "Fire Dragon",
+        "image": "assets/bosses/iceandfire-fire-dragon.png",
+        "find": [
+          "Search warm biomes for surface roosts and underground dragon caves.",
+          "Higher-stage dragons are more dangerous and are the source of the best materials."
+        ],
+        "drops": [
+          {
+            "name": "Fire Dragon Flesh",
+            "use": "Food/material drop from fire dragons."
+          },
+          {
+            "name": "Fire Dragon Scales",
+            "use": "Crafts dragon scale armor and related gear."
+          },
+          {
+            "name": "Fire Dragon Egg",
+            "use": "Rare female dragon drop used to hatch/tame a dragon."
+          }
+        ],
+        "special": [
+          "Eggs are the special rare drop and only come from female dragons in the relevant loot table."
+        ]
+      },
+      {
+        "name": "Ice Dragon",
+        "image": "assets/bosses/iceandfire-ice-dragon.png",
+        "find": [
+          "Search cold biomes for roosts and underground dragon caves.",
+          "Bring cold resistance, ranged damage, and blocks for terrain control."
+        ],
+        "drops": [
+          {
+            "name": "Ice Dragon Flesh",
+            "use": "Food/material drop from ice dragons."
+          },
+          {
+            "name": "Ice Dragon Scales",
+            "use": "Crafts dragon scale armor and related gear."
+          },
+          {
+            "name": "Ice Dragon Egg",
+            "use": "Rare female dragon drop used to hatch/tame a dragon."
+          }
+        ],
+        "special": [
+          "Dragon scales and eggs define the Ice and Fire progression loop."
+        ]
+      },
+      {
+        "name": "Lightning Dragon",
+        "image": "assets/bosses/iceandfire-lightning-dragon.png",
+        "find": [
+          "Search suitable overworld terrain for lightning dragon roosts and caves.",
+          "Expect high burst damage and mobile aerial attacks."
+        ],
+        "drops": [
+          {
+            "name": "Lightning Dragon Flesh",
+            "use": "Food/material drop from lightning dragons."
+          },
+          {
+            "name": "Lightning Dragon Scales",
+            "use": "Crafts dragon scale armor and related gear."
+          },
+          {
+            "name": "Lightning Dragon Egg",
+            "use": "Rare female dragon drop used to hatch/tame a dragon."
+          }
+        ],
+        "special": [
+          "Lightning Dragon Eggs and scales are the special rewards."
+        ]
+      },
+      {
+        "name": "Cyclops",
+        "image": "assets/bosses/iceandfire-cyclops.png",
+        "find": [
+          "Search for Cyclops caves in the overworld.",
+          "The cave commonly contains sheep and the Cyclops itself."
+        ],
+        "drops": [
+          {
+            "name": "Eye of Cyclops",
+            "use": "Unique Cyclops drop used by Ice and Fire recipes."
+          },
+          {
+            "name": "Cyclops Skull",
+            "use": "Trophy/decorative skull."
+          },
+          {
+            "name": "Leather, mutton, wool",
+            "use": "Secondary loot."
+          }
+        ],
+        "special": [
+          "Eye of Cyclops is the unique reward to keep."
+        ]
+      },
+      {
+        "name": "Gorgon",
+        "image": "assets/bosses/iceandfire-gorgon.png",
+        "find": [
+          "Search for Gorgon temples.",
+          "Avoid direct line of sight; the Gorgon can petrify unprepared players."
+        ],
+        "drops": [
+          {
+            "name": "Gorgon Head",
+            "use": "Powerful single-use petrification item."
+          }
+        ],
+        "special": [
+          "Gorgon Head is the special drop. Save it for a high-value target because its use is limited."
+        ]
+      },
+      {
+        "name": "Hydra",
+        "image": "assets/bosses/iceandfire-hydra.png",
+        "find": [
+          "Search swamp-style terrain for Hydra lairs.",
+          "Bring fire/poison answers and sustained damage for multiple heads."
+        ],
+        "drops": [
+          {
+            "name": "Hydra Heart",
+            "use": "Unique Hydra drop and special crafting/progression item."
+          },
+          {
+            "name": "Hydra Fang",
+            "use": "Hydra material drop."
+          },
+          {
+            "name": "Hydra Skull",
+            "use": "Trophy/decorative skull."
+          }
+        ],
+        "special": [
+          "Hydra Heart is the important special drop."
+        ]
+      }
+    ]
+  },
+  "irons-spells-n-spellbooks-855414": {
+    "intro": "Iron's Spells boss encounters unlock magic gear, spell books, and high-tier spell materials.",
+    "bosses": [
+      {
+        "name": "The Dead King",
+        "image": "assets/bosses/irons-dead-king.png",
+        "find": [
+          "Search Iron's Spells structure progression for the Catacombs/Dead King encounter.",
+          "Bring strong magic resistance, ranged options, and sustain."
+        ],
+        "drops": [
+          {
+            "name": "Blood Staff",
+            "use": "Unique blood magic casting staff."
+          },
+          {
+            "name": "Necronomicon",
+            "use": "Special spell book for necromancy-themed magic."
+          },
+          {
+            "name": "Scrolls, Blank Rune, Arcane Essence",
+            "use": "Spell learning and crafting materials."
+          }
+        ],
+        "special": [
+          "Blood Staff and Necronomicon are the special magic rewards."
+        ]
+      },
+      {
+        "name": "Echo of Tyros, First Flamebearer",
+        "image": "assets/bosses/irons-tyros.png",
+        "find": [
+          "Search Iron's Spells fire boss structure/progression content.",
+          "Bring fire resistance, movement, and enough burst damage for a high-tier caster fight."
+        ],
+        "drops": [
+          {
+            "name": "Signet of the Betrayer",
+            "use": "Unique Iron's Spells accessory/curio-style reward."
+          },
+          {
+            "name": "Decrepit Scythe",
+            "use": "Unique weapon reward."
+          },
+          {
+            "name": "Divine Soulshard and Cinder Essence",
+            "use": "High-tier magic crafting/progression materials."
+          }
+        ],
+        "special": [
+          "Divine Soulshard and the unique gear drops are the major reasons to fight Tyros."
+        ]
+      }
+    ]
+  }
+}
