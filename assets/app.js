@@ -176,16 +176,16 @@ function renderRecipeReference(value, currentTarget) {
   const match = text.match(/^(.*?)(\s*\(([a-z0-9_.-]+:[a-z0-9_./-]+)\))$/i);
   if (!match) return renderLinkedText(text, currentTarget);
 
-  const [, prefix, suffix, id] = match;
+  const [, prefix, , id] = match;
   const entry = findEntryById(id);
-  if (!entry || !["item", "block"].includes(entry.type)) return escapeHtml(text);
+  if (!entry || !["item", "block"].includes(entry.type)) return escapeHtml(prefix.trim());
 
   const nameMatch = prefix.match(/^((?:\d+\s*x\s+)|(?:.+?=\s*)|(?:.+?:\s*))?(.+?)\s*$/i);
-  if (!nameMatch) return `${renderGuideLink(prefix.trim(), entry)}${escapeHtml(suffix)}`;
+  if (!nameMatch) return renderGuideLink(prefix.trim(), entry);
 
   const leading = nameMatch[1] || "";
   const name = nameMatch[2].trim();
-  return `${escapeHtml(leading)}${renderGuideLink(name, entry)}${escapeHtml(suffix)}`;
+  return `${escapeHtml(leading)}${renderGuideLink(name, entry)}`;
 }
 
 function getBossDropsForItem(item) {
