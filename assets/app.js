@@ -11,6 +11,17 @@ const state = {
   topic: "All",
   query: "",
   itemCache: new Map(),
+  mapView: {
+    x: 0,
+    y: 0,
+    scale: 1,
+    dragging: false,
+    pointerId: null,
+    startX: 0,
+    startY: 0,
+    originX: 0,
+    originY: 0,
+  },
 };
 
 const elements = {
@@ -36,6 +47,10 @@ const elements = {
   mapDimension: document.querySelector("#mapDimension"),
   mapLayer: document.querySelector("#mapLayer"),
   mapSearch: document.querySelector("#mapSearch"),
+  mapZoomOut: document.querySelector("#mapZoomOut"),
+  mapZoomIn: document.querySelector("#mapZoomIn"),
+  mapReset: document.querySelector("#mapReset"),
+  mapFullscreen: document.querySelector("#mapFullscreen"),
   seedMapCanvas: document.querySelector("#seedMapCanvas"),
   seedMapList: document.querySelector("#seedMapList"),
 };
@@ -398,6 +413,39 @@ function mapLocations() {
     .sort((a, b) => String(a.name || a.id).localeCompare(String(b.name || b.id)));
 }
 
+function applyMapView() {
+  const world = elements.seedMapCanvas?.querySelector(".seed-map-world");
+  if (!world) return;
+  world.style.transform = `translate(${state.mapView.x}px, ${state.mapView.y}px) scale(${state.mapView.scale})`;
+}
+
+function resetMapView() {
+  state.mapView.x = 0;
+  state.mapView.y = 0;
+  state.mapView.scale = 1;
+  applyMapView();
+}
+
+function zoomMap(delta) {
+  const next = Math.min(4, Math.max(0.55, state.mapView.scale + delta));
+  state.mapView.scale = Number(next.toFixed(2));
+  applyMapView();
+}
+
+function toggleMapFullscreen() {
+  const panel = document.querySelector(".seed-map-panel");
+  if (!panel) return;
+  if (!document.fullscreenElement && panel.requestFullscreen) {
+    panel.requestFullscreen().catch(() => panel.classList.toggle("map-fullscreen"));
+    return;
+  }
+  if (document.fullscreenElement && document.exitFullscreen) {
+    document.exitFullscreen().catch(() => panel.classList.remove("map-fullscreen"));
+    return;
+  }
+  panel.classList.toggle("map-fullscreen");
+}
+
 function renderSeedMap() {
   if (!elements.seedMapMeta || !elements.mapDimension || !elements.seedMapCanvas || !elements.seedMapList) return;
   const map = state.serverMap;
@@ -443,20 +491,24 @@ function renderSeedMap() {
   const spanZ = Math.max(1, maxZ - minZ);
 
   elements.seedMapCanvas.innerHTML = `
-    <div class="map-axis x-axis">X ${escapeHtml(minX)} to ${escapeHtml(maxX)}</div>
-    <div class="map-axis z-axis">Z ${escapeHtml(minZ)} to ${escapeHtml(maxZ)}</div>
-    ${locations
-      .map((location) => {
-        const left = ((Number(location.x) - minX) / spanX) * 86 + 7;
-        const top = ((Number(location.z) - minZ) / spanZ) * 86 + 7;
-        return `
-          <button class="map-marker ${escapeHtml(location.type)}" type="button" style="left:${left}%;top:${top}%" title="${escapeHtml(`${location.name} | ${coordText(location)}`)}" data-copy-coords="${escapeHtml(coordText(location))}">
-            <span>${escapeHtml(location.name)}</span>
-          </button>
-        `;
-      })
-      .join("")}
+    <div class="seed-map-world">
+      <div class="map-terrain" aria-hidden="true"></div>
+      <div class="map-axis x-axis">X ${escapeHtml(minX)} to ${escapeHtml(maxX)}</div>
+      <div class="map-axis z-axis">Z ${escapeHtml(minZ)} to ${escapeHtml(maxZ)}</div>
+      ${locations
+        .map((location) => {
+          const left = ((Number(location.x) - minX) / spanX) * 86 + 7;
+          const top = ((Number(location.z) - minZ) / spanZ) * 86 + 7;
+          return `
+            <button class="map-marker ${escapeHtml(location.type)}" type="button" style="left:${left}%;top:${top}%" title="${escapeHtml(`${location.name} | ${coordText(location)}`)}" data-copy-coords="${escapeHtml(coordText(location))}">
+              <span>${escapeHtml(location.name)}</span>
+            </button>
+          `;
+        })
+        .join("")}
+    </div>
   `;
+  applyMapView();
 
   elements.seedMapList.innerHTML = locations
     .map(
@@ -955,6 +1007,42 @@ function bindEvents() {
   elements.mapDimension?.addEventListener("change", renderSeedMap);
   elements.mapLayer?.addEventListener("change", renderSeedMap);
   elements.mapSearch?.addEventListener("input", renderSeedMap);
+  elements.mapZoomOut?.addEventListener("click", () => zoomMap(-0.2));
+  elements.mapZoomIn?.addEventListener("click", () => zoomMap(0.2));
+  elements.mapReset?.addEventListener("click", resetMapView);
+  elements.mapFullscreen?.addEventListener("click", toggleMapFullscreen);
+  document.addEventListener("fullscreenchange", () => {
+    document.querySelector(".seed-map-panel")?.classList.toggle("map-fullscreen", Boolean(document.fullscreenElement));
+  });
+  elements.seedMapCanvas?.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    zoomMap(event.deltaY > 0 ? -0.12 : 0.12);
+  });
+  elements.seedMapCanvas?.addEventListener("pointerdown", (event) => {
+    if (event.target.closest(".map-marker")) return;
+    state.mapView.dragging = true;
+    state.mapView.pointerId = event.pointerId;
+    state.mapView.startX = event.clientX;
+    state.mapView.startY = event.clientY;
+    state.mapView.originX = state.mapView.x;
+    state.mapView.originY = state.mapView.y;
+    elements.seedMapCanvas.setPointerCapture?.(event.pointerId);
+    elements.seedMapCanvas.classList.add("dragging");
+  });
+  elements.seedMapCanvas?.addEventListener("pointermove", (event) => {
+    if (!state.mapView.dragging || state.mapView.pointerId !== event.pointerId) return;
+    state.mapView.x = state.mapView.originX + event.clientX - state.mapView.startX;
+    state.mapView.y = state.mapView.originY + event.clientY - state.mapView.startY;
+    applyMapView();
+  });
+  for (const eventName of ["pointerup", "pointercancel", "pointerleave"]) {
+    elements.seedMapCanvas?.addEventListener(eventName, (event) => {
+      if (state.mapView.pointerId !== event.pointerId && eventName !== "pointerleave") return;
+      state.mapView.dragging = false;
+      state.mapView.pointerId = null;
+      elements.seedMapCanvas.classList.remove("dragging");
+    });
+  }
   document.addEventListener("click", (event) => {
     const button = event.target.closest("[data-copy-coords]");
     if (!button) return;

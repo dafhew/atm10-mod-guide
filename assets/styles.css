@@ -515,17 +515,82 @@ button:focus,
   gap: 14px;
 }
 
+.seed-map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.seed-map-toolbar button {
+  min-height: 34px;
+  border: 1px solid #405246;
+  border-radius: 6px;
+  background: #101813;
+  color: var(--light-text);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.seed-map-toolbar button:hover {
+  border-color: var(--emerald);
+  background: #193323;
+}
+
 .seed-map-canvas {
   position: relative;
   min-height: 360px;
   border: 1px solid #35463c;
   border-radius: 8px;
-  background:
-    linear-gradient(rgba(15, 23, 18, 0.9), rgba(15, 23, 18, 0.9)),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: auto, 42px 42px, 42px 42px;
+  background: #101813;
   overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.seed-map-canvas.dragging {
+  cursor: grabbing;
+}
+
+.seed-map-world {
+  position: absolute;
+  inset: -18%;
+  transform-origin: center;
+  transition: transform 120ms ease;
+}
+
+.seed-map-canvas.dragging .seed-map-world {
+  transition: none;
+}
+
+.map-terrain {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 16% 18%, rgba(105, 178, 82, 0.96) 0 7%, transparent 7.5%),
+    radial-gradient(circle at 78% 22%, rgba(85, 143, 72, 0.96) 0 10%, transparent 10.5%),
+    radial-gradient(circle at 28% 82%, rgba(54, 113, 62, 0.98) 0 12%, transparent 12.5%),
+    radial-gradient(circle at 72% 76%, rgba(197, 183, 110, 0.94) 0 9%, transparent 9.5%),
+    radial-gradient(circle at 51% 47%, rgba(70, 136, 189, 0.9) 0 8%, transparent 8.5%),
+    linear-gradient(32deg, transparent 0 28%, rgba(65, 119, 176, 0.78) 28% 34%, transparent 34% 100%),
+    linear-gradient(126deg, transparent 0 48%, rgba(70, 136, 189, 0.68) 48% 54%, transparent 54% 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 32px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.09) 0 1px, transparent 1px 32px),
+    linear-gradient(135deg, #5f9d55 0 22%, #487f43 22% 38%, #8a8b55 38% 50%, #3d7f58 50% 66%, #7aa35c 66% 82%, #465f3e 82% 100%);
+  image-rendering: pixelated;
+}
+
+.map-terrain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(18, 29, 20, 0.32) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(18, 29, 20, 0.32) 1px, transparent 1px);
+  background-size: 16px 16px;
+  mix-blend-mode: multiply;
+  opacity: 0.42;
 }
 
 .map-empty {
@@ -550,10 +615,11 @@ button:focus,
 
 .map-axis {
   position: absolute;
-  z-index: 1;
-  color: var(--light-muted);
+  z-index: 2;
+  color: #fff7df;
   font-size: 0.72rem;
   font-weight: 900;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .x-axis {
@@ -568,13 +634,14 @@ button:focus,
 
 .map-marker {
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   transform: translate(-50%, -50%);
   width: 16px;
   height: 16px;
-  border: 2px solid #fffaf0;
-  border-radius: 50%;
+  border: 2px solid #1a1208;
+  border-radius: 3px;
   background: var(--gold);
+  box-shadow: 0 0 0 2px rgba(255, 250, 240, 0.72), 0 3px 8px rgba(0, 0, 0, 0.42);
   cursor: pointer;
 }
 
@@ -594,6 +661,30 @@ button:focus,
   color: var(--light-text);
   font-size: 0.72rem;
   white-space: nowrap;
+}
+
+.seed-map-panel:fullscreen,
+.seed-map-panel.map-fullscreen {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  border-radius: 0;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.seed-map-panel:fullscreen .seed-map-body,
+.seed-map-panel.map-fullscreen .seed-map-body {
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) 360px;
+}
+
+.seed-map-panel:fullscreen .seed-map-canvas,
+.seed-map-panel.map-fullscreen .seed-map-canvas,
+.seed-map-panel:fullscreen .seed-map-list,
+.seed-map-panel.map-fullscreen .seed-map-list {
+  max-height: none;
+  height: 100%;
 }
 
 .seed-map-list {
@@ -1151,6 +1242,12 @@ button:focus,
   .seed-map-canvas,
   .map-empty {
     min-height: 280px;
+  }
+
+  .seed-map-panel:fullscreen .seed-map-body,
+  .seed-map-panel.map-fullscreen .seed-map-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) minmax(180px, 0.45fr);
   }
 
   .boss-card {
