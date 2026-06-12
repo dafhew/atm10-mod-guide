@@ -52,6 +52,37 @@
 
         <section class="category-strip" id="categoryStrip"></section>
 
+        <section class="seed-map-panel" aria-labelledby="seedMapTitle">
+          <div class="seed-map-head">
+            <div>
+              <p class="eyebrow">Server seed map</p>
+              <h2 id="seedMapTitle">Structures and ores</h2>
+              <p id="seedMapMeta">Loading seed map data...</p>
+            </div>
+            <div class="seed-map-controls">
+              <label>
+                <span>Dimension</span>
+                <select id="mapDimension"></select>
+              </label>
+              <label>
+                <span>Layer</span>
+                <select id="mapLayer">
+                  <option value="structures">Structures</option>
+                  <option value="ores">Ores</option>
+                </select>
+              </label>
+              <label>
+                <span>Search</span>
+                <input id="mapSearch" type="search" placeholder="Ancient City, Allthemodium..." autocomplete="off" />
+              </label>
+            </div>
+          </div>
+          <div class="seed-map-body">
+            <div class="seed-map-canvas" id="seedMapCanvas" aria-label="Coordinate map"></div>
+            <div class="seed-map-list" id="seedMapList"></div>
+          </div>
+        </section>
+
         <section class="hero">
           <div>
             <p class="eyebrow" id="packMeta">Loading pack metadata...</p>

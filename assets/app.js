@@ -1,6 +1,7 @@
 const state = {
   data: null,
   bossData: {},
+  serverMap: null,
   searchIndex: [],
   searchResults: [],
   focusTarget: null,
@@ -31,6 +32,12 @@ const elements = {
   sources: document.querySelector("#sources"),
   primarySource: document.querySelector("#primarySource"),
   tutorialSearch: document.querySelector("#tutorialSearch"),
+  seedMapMeta: document.querySelector("#seedMapMeta"),
+  mapDimension: document.querySelector("#mapDimension"),
+  mapLayer: document.querySelector("#mapLayer"),
+  mapSearch: document.querySelector("#mapSearch"),
+  seedMapCanvas: document.querySelector("#seedMapCanvas"),
+  seedMapList: document.querySelector("#seedMapList"),
 };
 
 function escapeHtml(value) {
@@ -370,6 +377,101 @@ function renderStats() {
       )
       .join("");
   }
+}
+
+function coordText(location) {
+  const y = Number.isFinite(Number(location.y)) ? Number(location.y) : "~";
+  return `${Number(location.x)}, ${y}, ${Number(location.z)}`;
+}
+
+function mapLocations() {
+  if (!state.serverMap) return [];
+  const dimension = elements.mapDimension?.value;
+  const layer = elements.mapLayer?.value || "structures";
+  const query = (elements.mapSearch?.value || "").trim().toLowerCase();
+  return asArray(state.serverMap.locations)
+    .filter((location) => location.dimension === dimension && location.type === layer)
+    .filter((location) => {
+      if (!query) return true;
+      return [location.name, location.id, location.notes, location.ore, location.structure].join(" ").toLowerCase().includes(query);
+    })
+    .sort((a, b) => String(a.name || a.id).localeCompare(String(b.name || b.id)));
+}
+
+function renderSeedMap() {
+  if (!elements.seedMapMeta || !elements.mapDimension || !elements.seedMapCanvas || !elements.seedMapList) return;
+  const map = state.serverMap;
+  if (!map) {
+    elements.seedMapMeta.textContent = "Seed map data is not available.";
+    elements.seedMapCanvas.innerHTML = "";
+    elements.seedMapList.innerHTML = "";
+    return;
+  }
+
+  elements.seedMapMeta.textContent = `Seed ${map.seed} | ATM10 ${map.packVersion} | ${map.minecraftVersion} | ${map.worldType} world`;
+  if (!elements.mapDimension.options.length) {
+    elements.mapDimension.innerHTML = asArray(map.dimensions)
+      .map((dimension) => `<option value="${escapeHtml(dimension.id)}">${escapeHtml(dimension.name)}</option>`)
+      .join("");
+  }
+
+  const locations = mapLocations();
+  if (!locations.length) {
+    elements.seedMapCanvas.innerHTML = `
+      <div class="map-empty">
+        <strong>No coordinates imported for this filter yet.</strong>
+        <span>${escapeHtml(map.status)}</span>
+      </div>
+    `;
+    elements.seedMapList.innerHTML = `
+      <div class="map-help">
+        <strong>How to fill this map</strong>
+        <p>Import scanned points into <code>data/server-map.json</code> under <code>locations</code>. Each point needs <code>type</code>, <code>dimension</code>, <code>name</code>, <code>x</code>, <code>y</code>, and <code>z</code>.</p>
+        <p>For structures, use in-game <code>/locate structure</code>, Explorer's Compass, or a generated-world scanner. For ores, scan generated chunks or export coordinates from a mining/scanning tool.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const xs = locations.map((location) => Number(location.x));
+  const zs = locations.map((location) => Number(location.z));
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minZ = Math.min(...zs);
+  const maxZ = Math.max(...zs);
+  const spanX = Math.max(1, maxX - minX);
+  const spanZ = Math.max(1, maxZ - minZ);
+
+  elements.seedMapCanvas.innerHTML = `
+    <div class="map-axis x-axis">X ${escapeHtml(minX)} to ${escapeHtml(maxX)}</div>
+    <div class="map-axis z-axis">Z ${escapeHtml(minZ)} to ${escapeHtml(maxZ)}</div>
+    ${locations
+      .map((location) => {
+        const left = ((Number(location.x) - minX) / spanX) * 86 + 7;
+        const top = ((Number(location.z) - minZ) / spanZ) * 86 + 7;
+        return `
+          <button class="map-marker ${escapeHtml(location.type)}" type="button" style="left:${left}%;top:${top}%" title="${escapeHtml(`${location.name} | ${coordText(location)}`)}" data-copy-coords="${escapeHtml(coordText(location))}">
+            <span>${escapeHtml(location.name)}</span>
+          </button>
+        `;
+      })
+      .join("")}
+  `;
+
+  elements.seedMapList.innerHTML = locations
+    .map(
+      (location) => `
+        <article class="map-location">
+          <div>
+            <strong>${escapeHtml(location.name || location.id)}</strong>
+            <span>${escapeHtml(location.dimension)} | ${escapeHtml(coordText(location))}</span>
+            ${location.notes ? `<p>${escapeHtml(location.notes)}</p>` : ""}
+          </div>
+          <button type="button" data-copy-coords="${escapeHtml(coordText(location))}">Copy coords</button>
+        </article>
+      `
+    )
+    .join("");
 }
 
 function renderSelect() {
@@ -849,20 +951,34 @@ function bindEvents() {
     event.preventDefault();
     selectGuideTarget(link.dataset.targetType, link.dataset.targetModId, link.dataset.targetId);
   });
+  elements.mapDimension?.addEventListener("change", renderSeedMap);
+  elements.mapLayer?.addEventListener("change", renderSeedMap);
+  elements.mapSearch?.addEventListener("input", renderSeedMap);
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-copy-coords]");
+    if (!button) return;
+    const coords = button.dataset.copyCoords;
+    navigator.clipboard?.writeText(coords).catch(() => {});
+    button.classList.add("copied");
+    window.setTimeout(() => button.classList.remove("copied"), 900);
+  });
 }
 
 async function init() {
-  const [modsResponse, bossesResponse, searchResponse] = await Promise.all([
+  const [modsResponse, bossesResponse, searchResponse, mapResponse] = await Promise.all([
     fetch("data/mods.json", { cache: "no-store" }),
     fetch("data/bosses.json", { cache: "no-store" }),
     fetch("data/search-index.json", { cache: "no-store" }),
+    fetch("data/server-map.json", { cache: "no-store" }),
   ]);
   if (!modsResponse.ok) throw new Error("Could not load data/mods.json. Run npm run build:data first.");
   state.data = await modsResponse.json();
   state.bossData = bossesResponse.ok ? await bossesResponse.json() : {};
   state.searchIndex = searchResponse.ok ? (await searchResponse.json()).entries || [] : [];
+  state.serverMap = mapResponse.ok ? await mapResponse.json() : null;
   buildBossDropIndex();
   renderStats();
+  renderSeedMap();
   renderSelect();
   renderFilters();
   bindEvents();

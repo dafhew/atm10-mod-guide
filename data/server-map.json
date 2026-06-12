@@ -1,0 +1,25 @@
+{
+  "seed": "3046138947924569395",
+  "packName": "All the Mods 10",
+  "packVersion": "7.0",
+  "minecraftVersion": "1.21.1",
+  "loader": "NeoForge",
+  "worldType": "default",
+  "generatedAt": "2026-06-12T00:00:00.000Z",
+  "status": "Seed configured. Exact ATM10 structure and ore coordinates require imported scan data from the generated world, because modded worldgen cannot be predicted accurately from the seed alone in this static site.",
+  "dimensions": [
+    { "id": "minecraft:overworld", "name": "Overworld", "scale": 1 },
+    { "id": "minecraft:the_nether", "name": "Nether", "scale": 8 },
+    { "id": "minecraft:the_end", "name": "The End", "scale": 1 },
+    { "id": "allthemodium:mining", "name": "Mining Dimension", "scale": 1 },
+    { "id": "allthemodium:the_other", "name": "The Other", "scale": 1 },
+    { "id": "allthemodium:the_beyond", "name": "The Beyond", "scale": 1 },
+    { "id": "twilightforest:twilight_forest", "name": "Twilight Forest", "scale": 1 },
+    { "id": "aether:the_aether", "name": "The Aether", "scale": 1 },
+    { "id": "undergarden:undergarden", "name": "The Undergarden", "scale": 1 },
+    { "id": "the_bumblezone:the_bumblezone", "name": "The Bumblezone", "scale": 1 },
+    { "id": "deeperdarker:otherside", "name": "Otherside", "scale": 1 },
+    { "id": "eternal_starlight:starlight", "name": "Eternal Starlight", "scale": 1 }
+  ],
+  "locations": []
+}

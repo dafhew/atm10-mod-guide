@@ -461,6 +461,202 @@ button:focus,
   background: #203327;
 }
 
+.seed-map-panel {
+  margin-bottom: 16px;
+  padding: 20px;
+  border: 1px solid #435244;
+  border-radius: 8px;
+  background: #17211b;
+  color: var(--light-text);
+  box-shadow: var(--shadow);
+}
+
+.seed-map-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.seed-map-head h2 {
+  margin: 0;
+  color: #fff7df;
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+}
+
+.seed-map-head p:not(.eyebrow) {
+  margin: 7px 0 0;
+  color: var(--light-muted);
+}
+
+.seed-map-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.seed-map-controls label:last-child {
+  grid-column: 1 / -1;
+}
+
+.seed-map-controls label {
+  display: grid;
+  gap: 6px;
+  color: var(--light-muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.seed-map-body {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(280px, 0.8fr);
+  gap: 14px;
+}
+
+.seed-map-canvas {
+  position: relative;
+  min-height: 360px;
+  border: 1px solid #35463c;
+  border-radius: 8px;
+  background:
+    linear-gradient(rgba(15, 23, 18, 0.9), rgba(15, 23, 18, 0.9)),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: auto, 42px 42px, 42px 42px;
+  overflow: hidden;
+}
+
+.map-empty {
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  min-height: 360px;
+  padding: 24px;
+  text-align: center;
+}
+
+.map-empty strong {
+  color: #fff7df;
+  font-size: 1.05rem;
+}
+
+.map-empty span,
+.map-help p {
+  color: var(--light-muted);
+  line-height: 1.45;
+}
+
+.map-axis {
+  position: absolute;
+  z-index: 1;
+  color: var(--light-muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.x-axis {
+  left: 12px;
+  top: 10px;
+}
+
+.z-axis {
+  left: 12px;
+  bottom: 10px;
+}
+
+.map-marker {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid #fffaf0;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+}
+
+.map-marker.ores {
+  background: var(--diamond);
+}
+
+.map-marker span {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  max-width: 170px;
+  transform: translateY(-50%);
+  padding: 4px 6px;
+  border-radius: 5px;
+  background: rgba(8, 13, 10, 0.82);
+  color: var(--light-text);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.seed-map-list {
+  max-height: 360px;
+  overflow: auto;
+}
+
+.map-help,
+.map-location {
+  border: 1px solid #35463c;
+  border-radius: 8px;
+  background: #101813;
+  padding: 13px;
+}
+
+.map-help strong {
+  color: #fff7df;
+}
+
+.map-help code {
+  color: #fff7df;
+}
+
+.map-location {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.map-location strong,
+.map-location span {
+  display: block;
+}
+
+.map-location span {
+  color: var(--light-muted);
+  font-size: 0.78rem;
+}
+
+.map-location p {
+  margin: 7px 0 0;
+  color: var(--light-muted);
+  font-size: 0.85rem;
+}
+
+.map-location button {
+  align-self: start;
+  min-height: 34px;
+  border: 1px solid #1d5b46;
+  border-radius: 6px;
+  background: #26735f;
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.map-location button.copied,
+.map-marker.copied {
+  outline: 3px solid rgba(131, 215, 255, 0.35);
+}
+
 .hero {
   display: flex;
   justify-content: space-between;
@@ -875,6 +1071,11 @@ button:focus,
   .home-hero {
     grid-template-columns: 1fr;
   }
+
+  .seed-map-head,
+  .seed-map-body {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 980px) {
@@ -928,8 +1129,18 @@ button:focus,
   }
 
   .home-grid,
+  .seed-map-controls,
   .meta-grid {
     grid-template-columns: 1fr;
+  }
+
+  .seed-map-controls label:last-child {
+    grid-column: auto;
+  }
+
+  .seed-map-canvas,
+  .map-empty {
+    min-height: 280px;
   }
 
   .boss-card {
