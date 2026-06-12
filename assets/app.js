@@ -4,6 +4,8 @@ const state = {
   searchIndex: [],
   searchResults: [],
   focusTarget: null,
+  linkTargetsByMod: new Map(),
+  bossDropIndex: new Map(),
   selectedId: null,
   topic: "All",
   query: "",
@@ -53,12 +55,124 @@ function asArray(value) {
   return [value];
 }
 
+function asObjectArray(value) {
+  if (Array.isArray(value)) return value;
+  if (!value || typeof value !== "object" || !Object.keys(value).length) return [];
+  return [value];
+}
+
 function targetDomId(prefix, value) {
   return `${prefix}-${encodeURIComponent(String(value)).replace(/%/g, "_")}`;
 }
 
 function targetMatches(type, id) {
   return state.focusTarget?.type === type && state.focusTarget.id === id;
+}
+
+function normalizeKey(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/['"]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function targetKey(target) {
+  return `${target?.type || ""}:${target?.id || ""}`;
+}
+
+function buildBossDropIndex() {
+  state.bossDropIndex = new Map();
+  for (const [modId, entry] of Object.entries(state.bossData || {})) {
+    for (const boss of asArray(entry?.bosses)) {
+      for (const drop of asArray(boss.drops)) {
+        const key = normalizeKey(drop.name);
+        if (!key) continue;
+        if (!state.bossDropIndex.has(key)) state.bossDropIndex.set(key, []);
+        state.bossDropIndex.get(key).push({
+          bossName: boss.name,
+          modId,
+          dropName: drop.name,
+          use: drop.use,
+        });
+      }
+    }
+  }
+}
+
+function getGuideLinkTargets(modId) {
+  if (state.linkTargetsByMod.has(modId)) return state.linkTargetsByMod.get(modId);
+  const seen = new Set();
+  const targets = [];
+  for (const entry of state.searchIndex) {
+    if (entry.modId !== modId || !["boss", "item", "block"].includes(entry.type)) continue;
+    for (const phrase of [entry.name, entry.id]) {
+      const cleanPhrase = String(phrase || "").trim();
+      const normalized = normalizeKey(cleanPhrase);
+      if (cleanPhrase.length < 4 || normalized.length < 4 || seen.has(normalized)) continue;
+      seen.add(normalized);
+      targets.push({
+        phrase: cleanPhrase,
+        lower: cleanPhrase.toLowerCase(),
+        type: entry.type,
+        modId: entry.modId,
+        id: entry.type === "boss" ? entry.name : entry.id,
+      });
+    }
+  }
+  targets.sort((a, b) => b.phrase.length - a.phrase.length);
+  state.linkTargetsByMod.set(modId, targets);
+  return targets;
+}
+
+function canLinkAtBoundary(text, start, end) {
+  const before = start > 0 ? text[start - 1] : "";
+  const after = end < text.length ? text[end] : "";
+  return !/[a-z0-9_:-]/i.test(before) && !/[a-z0-9_:-]/i.test(after);
+}
+
+function renderLinkedText(value, currentTarget = null, modId = state.selectedId) {
+  const text = String(value ?? "");
+  if (!text) return "";
+  const lowerText = text.toLowerCase();
+  const targets = getGuideLinkTargets(modId).filter((target) => targetKey(target) !== targetKey(currentTarget));
+  let output = "";
+  let index = 0;
+
+  while (index < text.length) {
+    const match = targets.find((target) => lowerText.startsWith(target.lower, index) && canLinkAtBoundary(text, index, index + target.phrase.length));
+    if (!match) {
+      output += escapeHtml(text[index]);
+      index += 1;
+      continue;
+    }
+    const label = text.slice(index, index + match.phrase.length);
+    output += `<a class="guide-link" href="#" data-guide-link="1" data-target-type="${escapeHtml(match.type)}" data-target-mod-id="${escapeHtml(match.modId)}" data-target-id="${escapeHtml(match.id)}">${escapeHtml(label)}</a>`;
+    index += match.phrase.length;
+  }
+
+  return output;
+}
+
+function renderLinkedList(items, currentTarget = null) {
+  return asArray(items)
+    .map((item) => `<li>${renderLinkedText(item, currentTarget)}</li>`)
+    .join("");
+}
+
+function getBossDropsForItem(item) {
+  const keys = new Set([normalizeKey(item.name), normalizeKey(item.id?.split(":").pop()?.replace(/_/g, " "))].filter(Boolean));
+  const drops = [];
+  const seen = new Set();
+  for (const key of keys) {
+    for (const drop of state.bossDropIndex.get(key) || []) {
+      const dropKey = `${drop.modId}:${drop.bossName}:${drop.dropName}`;
+      if (seen.has(dropKey)) continue;
+      seen.add(dropKey);
+      drops.push(drop);
+    }
+  }
+  return drops;
 }
 
 function matches(mod) {
@@ -181,6 +295,17 @@ function selectSearchResult(result) {
   };
   renderSearchResults();
   setSelected(result.modId);
+}
+
+function selectGuideTarget(type, modId, id) {
+  state.focusTarget = { type, modId, id };
+  const entry = state.searchIndex.find((item) => item.type === type && item.modId === modId && (item.id === id || item.name === id));
+  if (entry) {
+    elements.searchInput.value = entry.name;
+    state.query = entry.name;
+    renderSearchResults();
+  }
+  setSelected(modId);
 }
 
 function renderStats() {
@@ -342,13 +467,13 @@ function renderSelected(mod) {
     ...mod.sections.map((section, index) => {
       const listTag = section.title === "Tutorial" ? "ol" : "ul";
       const items = section.items
-        .map((item) => `<li>${escapeHtml(item)}</li>`)
+        .map((item) => `<li>${renderLinkedText(item, null, mod.id)}</li>`)
         .join("");
       return `
         <details ${index < 2 ? "open" : ""}>
           <summary>${escapeHtml(section.title)}</summary>
           <div class="detail-body">
-            ${section.intro ? `<p>${escapeHtml(section.intro)}</p>` : ""}
+            ${section.intro ? `<p>${renderLinkedText(section.intro, null, mod.id)}</p>` : ""}
             <${listTag}>${items}</${listTag}>
           </div>
         </details>
@@ -376,17 +501,11 @@ function renderSelected(mod) {
   }
 }
 
-function renderTextList(items) {
-  return asArray(items)
-    .map((item) => `<li>${escapeHtml(item)}</li>`)
-    .join("");
-}
-
-function renderDrop(drop) {
+function renderDrop(drop, currentTarget) {
   return `
     <li>
-      <strong>${escapeHtml(drop.name)}</strong>
-      ${drop.use ? `<span>${escapeHtml(drop.use)}</span>` : ""}
+      <strong>${renderLinkedText(drop.name, currentTarget)}</strong>
+      ${drop.use ? `<span>${renderLinkedText(drop.use, currentTarget)}</span>` : ""}
     </li>
   `;
 }
@@ -399,6 +518,7 @@ function renderBossCard(boss) {
   const drops = asArray(boss.drops);
   const special = asArray(boss.special);
   const photoSources = asArray(boss.photoSources);
+  const currentTarget = { type: "boss", id: boss.name };
   const targetClass = targetMatches("boss", boss.name) ? " target-card" : "";
   return `
     <article class="boss-card${targetClass}" id="${escapeHtml(targetDomId("boss", boss.name))}">
@@ -409,18 +529,18 @@ function renderBossCard(boss) {
         <h4>${escapeHtml(boss.name)}</h4>
         <dl>
           <dt>How to find</dt>
-          <dd><ul>${renderTextList(boss.find)}</ul></dd>
+          <dd><ul>${renderLinkedList(boss.find, currentTarget)}</ul></dd>
           <dt>Drops</dt>
           <dd>
             <ul class="drop-list">
-              ${drops.length ? drops.map(renderDrop).join("") : "<li>No direct entity drops were found in the installed loot table; check structure chests and JEI/EMI.</li>"}
+              ${drops.length ? drops.map((drop) => renderDrop(drop, currentTarget)).join("") : "<li>No direct entity drops were found in the installed loot table; check structure chests and JEI/EMI.</li>"}
             </ul>
           </dd>
           ${
             special.length
               ? `
                 <dt>Special notes</dt>
-                <dd><ul>${renderTextList(special)}</ul></dd>
+                <dd><ul>${renderLinkedList(special, currentTarget)}</ul></dd>
               `
               : ""
           }
@@ -503,12 +623,96 @@ function renderItemsSection(mod, loadedItems) {
   `;
 }
 
+function renderBossDropAcquisition(drops) {
+  return `
+    <ul class="boss-drop-sources">
+      ${drops
+        .map(
+          (drop) => `
+            <li>
+              Dropped by
+              <a class="guide-link" href="#" data-guide-link="1" data-target-type="boss" data-target-mod-id="${escapeHtml(drop.modId)}" data-target-id="${escapeHtml(drop.bossName)}">${escapeHtml(drop.bossName)}</a>
+              ${drop.use ? `<span>${renderLinkedText(drop.use, { type: "boss", id: drop.bossName }, drop.modId)}</span>` : ""}
+            </li>
+          `
+        )
+        .join("")}
+    </ul>
+  `;
+}
+
+function renderRecipe(recipe, currentTarget) {
+  const pattern = asArray(recipe.pattern);
+  const key = asArray(recipe.key);
+  const ingredients = asArray(recipe.ingredients);
+  return `
+    <div class="recipe-card">
+      <div class="recipe-title">
+        <strong>${escapeHtml(recipe.type || "recipe")}</strong>
+        ${recipe.result ? `<span>${renderLinkedText(recipe.result, currentTarget)}</span>` : ""}
+      </div>
+      ${
+        pattern.length
+          ? `
+            <div class="recipe-pattern" aria-label="Recipe pattern">
+              ${pattern.map((row) => `<code>${escapeHtml(row)}</code>`).join("")}
+            </div>
+          `
+          : ""
+      }
+      ${
+        key.length
+          ? `
+            <ul class="recipe-ingredients">
+              ${key.map((entry) => `<li>${renderLinkedText(entry, currentTarget)}</li>`).join("")}
+            </ul>
+          `
+          : ""
+      }
+      ${
+        ingredients.length
+          ? `
+            <ul class="recipe-ingredients">
+              ${ingredients.map((entry) => `<li>${renderLinkedText(entry, currentTarget)}</li>`).join("")}
+            </ul>
+          `
+          : ""
+      }
+      ${recipe.source ? `<span class="recipe-source">${escapeHtml(recipe.source)}</span>` : ""}
+    </div>
+  `;
+}
+
+function renderRecipeList(item, recipeTypeList, currentTarget) {
+  const recipes = asObjectArray(item.recipes);
+  if (recipes.length) {
+    return `
+      <div class="recipe-list">
+        ${recipes.map((recipe) => renderRecipe(recipe, currentTarget)).join("")}
+      </div>
+    `;
+  }
+  if (recipeTypeList.length) {
+    return `Craft or process it with ${escapeHtml(recipeTypeList.join(", "))}. Press R on the item in JEI/EMI for pack-script changes or alternate recipes.`;
+  }
+  return "";
+}
+
 function renderItemCard(item) {
   const recipeTypeList = asArray(item.recipeTypes);
+  const hasRecipe = recipeTypeList.length > 0 || asObjectArray(item.recipes).length > 0;
+  const bossDrops = hasRecipe ? [] : getBossDropsForItem(item);
+  const currentTarget = { type: item.type === "block" ? "block" : "item", id: item.id };
   const targetClass = targetMatches(item.type === "block" ? "block" : "item", item.id) ? " target-card" : "";
   const recipeTypes = recipeTypeList.length
     ? `<div class="recipe-types">${recipeTypeList.map((type) => `<span class="pill">${escapeHtml(type)}</span>`).join("")}</div>`
     : "";
+  const acquisitionLabel = hasRecipe ? "Recipe" : bossDrops.length ? "Dropped by" : "How to acquire it";
+  const acquisitionBody = hasRecipe
+    ? renderRecipeList(item, recipeTypeList, currentTarget)
+    : bossDrops.length
+      ? renderBossDropAcquisition(bossDrops)
+      : renderLinkedText(item.acquire, currentTarget);
   return `
     <article class="item-card${targetClass}" id="${escapeHtml(targetDomId("item", item.id))}">
       <div class="item-card-head">
@@ -517,11 +721,11 @@ function renderItemCard(item) {
       </div>
       <dl>
         <dt>What it does</dt>
-        <dd>${escapeHtml(item.purpose)}</dd>
-        <dt>How to acquire it</dt>
-        <dd>${escapeHtml(item.acquire)}</dd>
+        <dd>${renderLinkedText(item.purpose, currentTarget)}</dd>
+        <dt>${escapeHtml(acquisitionLabel)}</dt>
+        <dd>${acquisitionBody}</dd>
         <dt>How to use it</dt>
-        <dd>${escapeHtml(item.use)}</dd>
+        <dd>${renderLinkedText(item.use, currentTarget)}</dd>
       </dl>
       ${recipeTypes}
     </article>
@@ -612,6 +816,12 @@ function bindEvents() {
     const button = event.target.closest("[data-id]");
     if (button) setSelected(button.dataset.id);
   });
+  elements.details.addEventListener("click", (event) => {
+    const link = event.target.closest("[data-guide-link]");
+    if (!link) return;
+    event.preventDefault();
+    selectGuideTarget(link.dataset.targetType, link.dataset.targetModId, link.dataset.targetId);
+  });
 }
 
 async function init() {
@@ -624,6 +834,7 @@ async function init() {
   state.data = await modsResponse.json();
   state.bossData = bossesResponse.ok ? await bossesResponse.json() : {};
   state.searchIndex = searchResponse.ok ? (await searchResponse.json()).entries || [] : [];
+  buildBossDropIndex();
   renderStats();
   renderSelect();
   renderFilters();

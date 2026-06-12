@@ -19,6 +19,12 @@ function entryText(parts) {
   return compact(parts.filter(Boolean).join(" ")).toLowerCase();
 }
 
+function objectArray(value) {
+  if (Array.isArray(value)) return value;
+  if (!value || typeof value !== "object" || !Object.keys(value).length) return [];
+  return [value];
+}
+
 const data = readJson(modsPath, { mods: [] });
 const bossData = readJson(bossesPath, {});
 const entries = [];
@@ -54,13 +60,26 @@ for (const mod of data.mods) {
   const itemPath = path.join(root, mod.itemDataFile);
   const items = readJson(itemPath, []);
   for (const item of items) {
+    const recipes = objectArray(item.recipes);
     entries.push({
       type: item.type === "block" ? "block" : "item",
       modId: mod.id,
       modName: mod.name,
       name: item.name,
       id: item.id,
-      text: entryText([item.name, item.id, item.type, mod.name]),
+      text: entryText([
+        item.name,
+        item.id,
+        item.type,
+        mod.name,
+        item.purpose,
+        item.acquire,
+        item.use,
+        Array.isArray(item.recipeTypes) ? item.recipeTypes.join(" ") : item.recipeTypes,
+        recipes
+          .map((recipe) => [recipe.type, recipe.result, recipe.pattern?.join(" "), recipe.key?.join(" "), recipe.ingredients?.join(" ")].join(" "))
+          .join(" "),
+      ]),
     });
   }
 }

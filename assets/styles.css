@@ -678,6 +678,19 @@ button:focus,
   color: var(--muted);
 }
 
+.guide-link {
+  border-bottom: 1px solid rgba(38, 115, 95, 0.38);
+  color: #1d6f58;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.guide-link:hover,
+.guide-link:focus {
+  border-bottom-color: #1d6f58;
+  color: #123f33;
+}
+
 .photo-links {
   display: flex;
   flex-wrap: wrap;
@@ -750,6 +763,67 @@ button:focus,
   color: #45554f;
   font-size: 0.88rem;
   line-height: 1.42;
+}
+
+.boss-drop-sources,
+.recipe-ingredients {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.boss-drop-sources span {
+  display: block;
+  color: var(--muted);
+}
+
+.recipe-list {
+  display: grid;
+  gap: 8px;
+}
+
+.recipe-card {
+  display: grid;
+  gap: 7px;
+  padding: 9px;
+  border: 1px solid #dacbaa;
+  border-radius: 6px;
+  background: #f7edd9;
+}
+
+.recipe-title {
+  display: grid;
+  gap: 3px;
+}
+
+.recipe-title strong {
+  color: #22312c;
+  text-transform: capitalize;
+}
+
+.recipe-title span,
+.recipe-source {
+  color: var(--muted);
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+}
+
+.recipe-pattern {
+  display: inline-grid;
+  gap: 3px;
+  justify-self: start;
+}
+
+.recipe-pattern code {
+  display: block;
+  min-width: 54px;
+  padding: 3px 6px;
+  border: 1px solid #cdbd9d;
+  border-radius: 4px;
+  background: #fffaf0;
+  color: #22312c;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  text-align: center;
+  white-space: pre;
 }
 
 .recipe-types {

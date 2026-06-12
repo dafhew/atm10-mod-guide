@@ -1,9 +1,13 @@
 param(
   [string]$InstancePath = "C:\Users\dafyd\curseforge\minecraft\Instances\All the Mods 10 - ATM10",
-  [string]$DataPath = "C:\Users\dafyd\atm10-mod-guide\data\mods.json"
+  [string]$DataPath = ""
 )
 
 $ErrorActionPreference = "Stop"
+
+if ([string]::IsNullOrWhiteSpace($DataPath)) {
+  $DataPath = Join-Path (Split-Path -Parent $PSScriptRoot) "data\mods.json"
+}
 
 Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -60,6 +64,112 @@ function Get-ShortRecipeType {
   param([string]$RecipeType)
   if ([string]::IsNullOrWhiteSpace($RecipeType)) { return "recipe" }
   return ($RecipeType -replace "^minecraft:", "" -replace "^forge:", "" -replace "^neoforge:", "" -replace "^.+:", "") -replace "_", " "
+}
+
+function Convert-IdToName {
+  param([string]$Id)
+  if ([string]::IsNullOrWhiteSpace($Id)) { return "" }
+  $local = ($Id -split ":", 2)[-1] -replace "[_/.-]+", " "
+  return (Get-Culture).TextInfo.ToTitleCase($local)
+}
+
+function Format-Ingredient {
+  param($Value)
+  if ($null -eq $Value) { return "empty" }
+  if ($Value -is [string]) {
+    if ($Value -match "^[a-z0-9_.-]+:[a-z0-9_./-]+$") { return "$(Convert-IdToName $Value) ($Value)" }
+    return $Value
+  }
+  if ($Value -is [array]) {
+    $options = @($Value | ForEach-Object { Format-Ingredient $_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    return ($options -join " or ")
+  }
+  if ($Value.item) { return "$(Convert-IdToName $Value.item) ($($Value.item))" }
+  if ($Value.id) { return "$(Convert-IdToName $Value.id) ($($Value.id))" }
+  if ($Value.tag) { return "#$($Value.tag)" }
+  if ($Value.ingredient) { return Format-Ingredient $Value.ingredient }
+  if ($Value.value) { return Format-Ingredient $Value.value }
+  return "ingredient"
+}
+
+function Get-RecipeResultText {
+  param($Recipe)
+  $result = $Recipe.result
+  if ($null -eq $result) { $result = $Recipe.output }
+  if ($null -eq $result) { $result = $Recipe.item }
+  if ($null -eq $result -and $Recipe.results) { $result = @($Recipe.results)[0] }
+  if ($null -eq $result) { return "" }
+
+  $id = $null
+  $count = $null
+  if ($result -is [string]) {
+    $id = $result
+  } else {
+    if ($result.id) { $id = $result.id }
+    elseif ($result.item) { $id = $result.item }
+    if ($result.count) { $count = $result.count }
+  }
+  if ([string]::IsNullOrWhiteSpace($id)) { return "" }
+  $name = Convert-IdToName $id
+  if ($count) { return "$count x $name ($id)" }
+  return "$name ($id)"
+}
+
+function New-RecipeSummary {
+  param($Recipe, [string]$EntryName)
+  $type = Get-ShortRecipeType $Recipe.type
+  $summary = [ordered]@{
+    type = $type
+    result = Get-RecipeResultText $Recipe
+    source = $EntryName
+  }
+
+  switch -Regex ($type) {
+    "^crafting shaped$" {
+      $pattern = @($Recipe.pattern | Where-Object { $_ })
+      if ($pattern.Count) { $summary.pattern = $pattern }
+      $keys = @()
+      if ($Recipe.key) {
+        foreach ($property in $Recipe.key.PSObject.Properties) {
+          $keys += "$($property.Name) = $(Format-Ingredient $property.Value)"
+        }
+      }
+      if ($keys.Count) { $summary.key = @($keys | Select-Object -First 12) }
+      break
+    }
+    "^crafting shapeless$" {
+      $ingredients = @($Recipe.ingredients | ForEach-Object { Format-Ingredient $_ } | Where-Object { $_ })
+      if ($ingredients.Count) { $summary.ingredients = @($ingredients | Select-Object -First 12) }
+      break
+    }
+    "stonecutting|smelting|blasting|smoking|campfire|crushing|milling|cutting|pressing|deploying|mixing|compacting|washing|haunting|splashing" {
+      $ingredients = @()
+      if ($Recipe.ingredient) { $ingredients += Format-Ingredient $Recipe.ingredient }
+      if ($Recipe.ingredients) { $ingredients += @($Recipe.ingredients | ForEach-Object { Format-Ingredient $_ }) }
+      if ($Recipe.input) { $ingredients += Format-Ingredient $Recipe.input }
+      if ($ingredients.Count) { $summary.ingredients = @($ingredients | Where-Object { $_ } | Select-Object -First 12) }
+      break
+    }
+    "smithing" {
+      $parts = @()
+      if ($Recipe.template) { $parts += "Template: $(Format-Ingredient $Recipe.template)" }
+      if ($Recipe.base) { $parts += "Base: $(Format-Ingredient $Recipe.base)" }
+      if ($Recipe.addition) { $parts += "Addition: $(Format-Ingredient $Recipe.addition)" }
+      if ($parts.Count) { $summary.ingredients = $parts }
+      break
+    }
+    default {
+      $ingredients = @()
+      foreach ($name in @("ingredient", "ingredients", "input", "inputs", "base", "addition", "template")) {
+        $property = $Recipe.PSObject.Properties[$name]
+        if ($property) { $ingredients += @($property.Value | ForEach-Object { Format-Ingredient $_ }) }
+      }
+      if ($ingredients.Count) { $summary.ingredients = @($ingredients | Where-Object { $_ } | Select-Object -First 12) }
+      break
+    }
+  }
+
+  return [PSCustomObject]$summary
 }
 
 function Get-ItemPurpose {
@@ -196,6 +306,7 @@ function Read-ModItemsFromJar {
           $recipesByResult[$resultId] = @{
             types = New-Object System.Collections.Generic.List[string]
             files = New-Object System.Collections.Generic.List[string]
+            summaries = New-Object System.Collections.Generic.List[object]
           }
         }
         if (-not $recipesByResult[$resultId].types.Contains($recipeType)) {
@@ -203,6 +314,9 @@ function Read-ModItemsFromJar {
         }
         if ($recipesByResult[$resultId].files.Count -lt 5) {
           $recipesByResult[$resultId].files.Add($entry.FullName)
+        }
+        if ($recipesByResult[$resultId].summaries.Count -lt 3) {
+          $recipesByResult[$resultId].summaries.Add((New-RecipeSummary $recipe $entry.FullName))
         }
       }
     }
@@ -214,6 +328,14 @@ function Read-ModItemsFromJar {
   foreach ($key in ($itemsById.Keys | Sort-Object)) {
     $base = $itemsById[$key]
     $recipeInfo = $recipesByResult[$key]
+    $recipeTypes = @()
+    $recipeFiles = @()
+    $recipeSummaries = @()
+    if ($recipeInfo) {
+      $recipeTypes = @($recipeInfo.types | Select-Object -First 6)
+      $recipeFiles = @($recipeInfo.files | Select-Object -First 5)
+      $recipeSummaries = @($recipeInfo.summaries | Select-Object -First 3)
+    }
     $items += [PSCustomObject][ordered]@{
       id = $base.id
       name = $base.name
@@ -221,8 +343,9 @@ function Read-ModItemsFromJar {
       purpose = Get-ItemPurpose $base.name $base.id $base.type $Mod.topic
       acquire = Get-AcquisitionText $recipeInfo $base.name $base.id $base.type
       use = Get-UseText $base.name $base.id $base.type $Mod.topic
-      recipeTypes = if ($recipeInfo) { @($recipeInfo.types | Select-Object -First 6) } else { @() }
-      recipeFiles = if ($recipeInfo) { @($recipeInfo.files | Select-Object -First 5) } else { @() }
+      recipeTypes = [object[]]$recipeTypes
+      recipeFiles = [object[]]$recipeFiles
+      recipes = [object[]]$recipeSummaries
     }
   }
 

@@ -32,8 +32,8 @@
         "url": "https://docs.modrinth.com/api/"
       }
     ],
-    "itemDataSplitAt": "2026-06-11T23:11:29.700Z",
-    "itemDataGeneratedAt": "2026-06-11T23:11:18.6387657+00:00"
+    "itemDataSplitAt": "2026-06-12T11:08:57.324Z",
+    "itemDataGeneratedAt": "2026-06-12T11:08:51.5729974+00:00"
   },
   "topics": [
     "Building & Decoration",
@@ -3472,7 +3472,7 @@
     },
     {
       "id": "ars-nergistique-905641",
-      "name": "Ars ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°nergistique",
+      "name": "Ars ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°nergistique",
       "type": "mod",
       "topic": "Magic",
       "summary": "Magic progression, spells, rituals, artifacts, or supernatural resources.",
@@ -3528,7 +3528,7 @@
           "items": [
             "Main role: Magic.",
             "Complexity: Medium to high: best learned through staged progression and JEI/EMI recipes.",
-            "Best first tool: JEI/EMI search for \"Ars ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°nergistique\" plus any guide book or wiki linked below.",
+            "Best first tool: JEI/EMI search for \"Ars ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°nergistique\" plus any guide book or wiki linked below.",
             "For shared servers, test chunk loading, automation loops, and high-volume farms before leaving them unattended."
           ]
         },
@@ -14141,7 +14141,7 @@
     },
     {
       "id": "explorify-dungeons-structures-698309",
-      "name": "Explorify ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Dungeons & Structures",
+      "name": "Explorify ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Dungeons & Structures",
       "type": "mod",
       "topic": "World & Exploration",
       "summary": "World generation, structures, mobs, dimensions, bosses, or exploration content.",
@@ -14220,7 +14220,7 @@
           "items": [
             "Main role: World & Exploration.",
             "Complexity: Medium: check recipes, config, and official docs before scaling it in a shared world.",
-            "Best first tool: JEI/EMI search for \"Explorify ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Dungeons & Structures\" plus any guide book or wiki linked below.",
+            "Best first tool: JEI/EMI search for \"Explorify ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Dungeons & Structures\" plus any guide book or wiki linked below.",
             "For shared servers, test chunk loading, automation loops, and high-volume farms before leaving them unattended."
           ]
         },
@@ -21134,7 +21134,7 @@
     },
     {
       "id": "jade-324717",
-      "name": "Jade ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â",
+      "name": "Jade ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â",
       "type": "mod",
       "topic": "QoL & UI",
       "summary": "Interface, mapping, inventory, tooltip, configuration, or quality-of-life features.",
@@ -21190,7 +21190,7 @@
           "items": [
             "Main role: QoL & UI.",
             "Complexity: Low to medium: configure it once, then adjust as needed.",
-            "Best first tool: JEI/EMI search for \"Jade ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â\" plus any guide book or wiki linked below.",
+            "Best first tool: JEI/EMI search for \"Jade ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â\" plus any guide book or wiki linked below.",
             "For shared servers, test chunk loading, automation loops, and high-volume farms before leaving them unattended."
           ]
         },
@@ -31139,7 +31139,7 @@
     },
     {
       "id": "o-o-owo-lib-532610",
-      "name": "oÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°o (owo-lib)",
+      "name": "oÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°o (owo-lib)",
       "type": "mod",
       "topic": "Library / Dependency",
       "summary": "A support library or API used by other mods in the pack.",
@@ -31196,7 +31196,7 @@
           "items": [
             "Main role: Library / Dependency.",
             "Complexity: Low: dependency mod, usually no direct player progression.",
-            "Best first tool: JEI/EMI search for \"oÃƒÆ’Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°o (owo-lib)\" plus any guide book or wiki linked below.",
+            "Best first tool: JEI/EMI search for \"oÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°o (owo-lib)\" plus any guide book or wiki linked below.",
             "For shared servers, test chunk loading, automation loops, and high-volume farms before leaving them unattended."
           ]
         },
