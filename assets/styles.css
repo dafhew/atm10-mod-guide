@@ -625,13 +625,23 @@ button:focus,
 }
 
 .map-location strong,
-.map-location span {
+.map-location span,
+.map-location em {
   display: block;
 }
 
 .map-location span {
   color: var(--light-muted);
   font-size: 0.78rem;
+}
+
+.map-location em {
+  margin-top: 4px;
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .map-location p {

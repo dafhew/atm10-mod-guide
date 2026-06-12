@@ -393,7 +393,7 @@ function mapLocations() {
     .filter((location) => location.dimension === dimension && location.type === layer)
     .filter((location) => {
       if (!query) return true;
-      return [location.name, location.id, location.notes, location.ore, location.structure].join(" ").toLowerCase().includes(query);
+      return [location.name, location.id, location.notes, location.confidence, location.ore, location.structure].join(" ").toLowerCase().includes(query);
     })
     .sort((a, b) => String(a.name || a.id).localeCompare(String(b.name || b.id)));
 }
@@ -465,6 +465,7 @@ function renderSeedMap() {
           <div>
             <strong>${escapeHtml(location.name || location.id)}</strong>
             <span>${escapeHtml(location.dimension)} | ${escapeHtml(coordText(location))}</span>
+            ${location.confidence ? `<em>${escapeHtml(location.confidence)}</em>` : ""}
             ${location.notes ? `<p>${escapeHtml(location.notes)}</p>` : ""}
           </div>
           <button type="button" data-copy-coords="${escapeHtml(coordText(location))}">Copy coords</button>

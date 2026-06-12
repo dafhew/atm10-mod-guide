@@ -17,7 +17,7 @@ Friends on the same network can try `http://YOUR-PC-IP:4173`. For friends outsid
 
 ## Server Map Coordinates
 
-The home page seed map reads `data/server-map.json`. The seed and dimensions are configured there; exact structure and ore coordinates should be added under `locations` after scanning the generated world or recording `/locate` results.
+The home page seed map reads `data/server-map.json`. The seed and dimensions are configured there. The committed coordinates are deterministic, unverified estimates generated from the seed so the map is immediately usable as a starting point. Replace or add `locations` after scanning the generated world or recording `/locate` results.
 
 Example location:
 
@@ -33,7 +33,7 @@ Example location:
 }
 ```
 
-Use `type: "ores"` for ore markers. Run `npm run check` after editing; it validates the map data.
+Use `type: "ores"` for ore markers. Run `npm run check` after editing; it validates the map data. Run `npm run build:map-estimates` to regenerate the unverified estimate set from the configured seed.
 
 ## Data Sources
 
