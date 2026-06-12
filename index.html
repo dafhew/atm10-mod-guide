@@ -30,10 +30,11 @@
           <select id="modSelect"></select>
         </label>
 
-        <label class="field">
-          <span>Search</span>
-          <input id="searchInput" type="search" placeholder="AE2, bees, storage..." />
-        </label>
+        <div class="field search-field">
+          <label for="searchInput">Search</label>
+          <input id="searchInput" type="search" placeholder="Search mods, bosses, items, blocks..." autocomplete="off" />
+          <div class="search-results" id="searchResults"></div>
+        </div>
 
         <div class="category-tools" id="categoryTools"></div>
         <div class="category-list" id="modList"></div>

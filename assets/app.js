@@ -1,6 +1,9 @@
 const state = {
   data: null,
   bossData: {},
+  searchIndex: [],
+  searchResults: [],
+  focusTarget: null,
   selectedId: null,
   topic: "All",
   query: "",
@@ -17,6 +20,7 @@ const elements = {
   visibleCount: document.querySelector("#visibleCount"),
   modSelect: document.querySelector("#modSelect"),
   searchInput: document.querySelector("#searchInput"),
+  searchResults: document.querySelector("#searchResults"),
   modList: document.querySelector("#modList"),
   selectedName: document.querySelector("#selectedName"),
   selectedSummary: document.querySelector("#selectedSummary"),
@@ -47,6 +51,14 @@ function asArray(value) {
   if (Array.isArray(value)) return value;
   if (!value || typeof value === "object") return [];
   return [value];
+}
+
+function targetDomId(prefix, value) {
+  return `${prefix}-${encodeURIComponent(String(value)).replace(/%/g, "_")}`;
+}
+
+function targetMatches(type, id) {
+  return state.focusTarget?.type === type && state.focusTarget.id === id;
 }
 
 function matches(mod) {
@@ -84,6 +96,91 @@ function setSelected(id) {
   renderList();
   elements.modSelect.value = mod.id;
   history.replaceState(null, "", `#${encodeURIComponent(mod.id)}`);
+}
+
+function resultTypeLabel(type) {
+  return {
+    mod: "Mod",
+    boss: "Boss",
+    block: "Block",
+    item: "Item",
+  }[type] || type;
+}
+
+function scoreSearchEntry(entry, query, tokens) {
+  const name = String(entry.name || "").toLowerCase();
+  const id = String(entry.id || "").toLowerCase();
+  const text = String(entry.text || "").toLowerCase();
+  if (!tokens.every((token) => text.includes(token) || name.includes(token) || id.includes(token))) return 0;
+
+  let score = 10;
+  if (name === query) score += 1000;
+  else if (name.startsWith(query)) score += 700;
+  else if (name.includes(query)) score += 350;
+  if (id === query) score += 850;
+  else if (id.startsWith(query)) score += 500;
+  else if (id.includes(query)) score += 260;
+  if (entry.modName?.toLowerCase?.().includes(query)) score += 80;
+  score += tokens.reduce((total, token) => total + (name.includes(token) ? 30 : 0) + (id.includes(token) ? 20 : 0), 0);
+  if (entry.type === "mod") score += 60;
+  if (entry.type === "boss") score += 40;
+  if (entry.type === "block") score += 20;
+  return score;
+}
+
+function findSearchResults(query) {
+  const cleaned = query.trim().toLowerCase();
+  if (cleaned.length < 2) return [];
+  const tokens = cleaned.split(/\s+/).filter(Boolean);
+  return state.searchIndex
+    .map((entry) => ({ entry, score: scoreSearchEntry(entry, cleaned, tokens) }))
+    .filter((result) => result.score > 0)
+    .sort((a, b) => b.score - a.score || a.entry.name.localeCompare(b.entry.name))
+    .slice(0, 14)
+    .map((result) => result.entry);
+}
+
+function renderSearchResults() {
+  if (!elements.searchResults) return;
+  const query = state.query.trim();
+  state.searchResults = findSearchResults(query);
+  if (!query) {
+    elements.searchResults.innerHTML = "";
+    return;
+  }
+  if (!state.searchResults.length) {
+    elements.searchResults.innerHTML = '<div class="search-empty">No direct matches found.</div>';
+    return;
+  }
+
+  elements.searchResults.innerHTML = `
+    <div class="search-result-list">
+      ${state.searchResults
+        .map(
+          (result, index) => `
+            <button class="search-result" type="button" data-result-index="${index}">
+              <span class="result-kind">${escapeHtml(resultTypeLabel(result.type))}</span>
+              <strong>${escapeHtml(result.name)}</strong>
+              <span>${escapeHtml(result.modName)}${result.id && result.id !== result.name ? ` | ${escapeHtml(result.id)}` : ""}</span>
+            </button>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function selectSearchResult(result) {
+  if (!result) return;
+  elements.searchInput.value = result.name;
+  state.query = result.name;
+  state.focusTarget = {
+    type: result.type,
+    modId: result.modId,
+    id: result.type === "mod" ? result.modId : result.id,
+  };
+  renderSearchResults();
+  setSelected(result.modId);
 }
 
 function renderStats() {
@@ -262,6 +359,7 @@ function renderSelected(mod) {
   ].join("");
 
   renderSources(mod);
+  queueFocusTarget();
 
   if (mod.itemDataFile && !state.itemCache.has(mod.id)) {
     loadItems(mod)
@@ -301,8 +399,9 @@ function renderBossCard(boss) {
   const drops = asArray(boss.drops);
   const special = asArray(boss.special);
   const photoSources = asArray(boss.photoSources);
+  const targetClass = targetMatches("boss", boss.name) ? " target-card" : "";
   return `
-    <article class="boss-card">
+    <article class="boss-card${targetClass}" id="${escapeHtml(targetDomId("boss", boss.name))}">
       <div class="boss-image-frame">
         <img src="${escapeHtml(boss.image)}" alt="${escapeHtml(boss.imageAlt || boss.name)}" loading="lazy" />
       </div>
@@ -366,9 +465,10 @@ async function loadItems(mod) {
 
 function renderItemsSection(mod, loadedItems) {
   const expectedCount = Number(mod.itemCount || 0);
+  const shouldOpen = state.focusTarget?.modId === mod.id && ["item", "block"].includes(state.focusTarget.type);
   if (!expectedCount) {
     return `
-      <details>
+      <details ${shouldOpen ? "open" : ""}>
         <summary>Items & blocks (0)</summary>
         <div class="detail-body">
           <p>No item/block entries were found in this mod jar's English language file. This usually means the mod is a library, client tool, performance mod, structure mod, integration, shader pack, or uses another namespace for content.</p>
@@ -379,7 +479,7 @@ function renderItemsSection(mod, loadedItems) {
 
   if (!loadedItems) {
     return `
-      <details>
+      <details ${shouldOpen ? "open" : ""}>
         <summary>Items & blocks (${escapeHtml(expectedCount.toLocaleString())})</summary>
         <div class="detail-body">
           <p>Loading item and block details for this mod...</p>
@@ -391,7 +491,7 @@ function renderItemsSection(mod, loadedItems) {
   const items = loadedItems;
 
   return `
-    <details>
+    <details ${shouldOpen ? "open" : ""}>
       <summary>Items & blocks (${escapeHtml(items.length.toLocaleString())})</summary>
       <div class="detail-body">
         <p>Extracted from the installed jar's language keys and recipe files. Recipe text points you to JEI/EMI because ATM10 pack scripts can add or alter recipes outside the mod jar.</p>
@@ -405,11 +505,12 @@ function renderItemsSection(mod, loadedItems) {
 
 function renderItemCard(item) {
   const recipeTypeList = asArray(item.recipeTypes);
+  const targetClass = targetMatches(item.type === "block" ? "block" : "item", item.id) ? " target-card" : "";
   const recipeTypes = recipeTypeList.length
     ? `<div class="recipe-types">${recipeTypeList.map((type) => `<span class="pill">${escapeHtml(type)}</span>`).join("")}</div>`
     : "";
   return `
-    <article class="item-card">
+    <article class="item-card${targetClass}" id="${escapeHtml(targetDomId("item", item.id))}">
       <div class="item-card-head">
         <strong>${escapeHtml(item.name)}</strong>
         <span>${escapeHtml(item.type)} | ${escapeHtml(item.id)}</span>
@@ -425,6 +526,20 @@ function renderItemCard(item) {
       ${recipeTypes}
     </article>
   `;
+}
+
+function queueFocusTarget() {
+  const target = state.focusTarget;
+  if (!target || target.modId !== state.selectedId) return;
+  window.setTimeout(() => {
+    const element =
+      target.type === "mod"
+        ? document.querySelector(".hero")
+        : document.getElementById(targetDomId(target.type === "boss" ? "boss" : "item", target.id));
+    if (!element) return;
+    element.closest("details")?.setAttribute("open", "");
+    element.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 80);
 }
 
 function renderSources(mod) {
@@ -453,8 +568,27 @@ function bindEvents() {
   elements.searchInput.addEventListener("input", (event) => {
     state.query = event.target.value;
     const mods = filteredMods();
+    renderSearchResults();
     renderList();
     if (!mods.some((mod) => mod.id === state.selectedId)) setSelected(mods[0]?.id);
+  });
+  elements.searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      selectSearchResult(state.searchResults[0] || findSearchResults(state.query)[0]);
+    }
+    if (event.key === "Escape") {
+      elements.searchInput.value = "";
+      state.query = "";
+      state.searchResults = [];
+      renderSearchResults();
+      renderList();
+    }
+  });
+  elements.searchResults?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-result-index]");
+    if (!button) return;
+    selectSearchResult(state.searchResults[Number(button.dataset.resultIndex)]);
   });
   elements.categoryTools?.addEventListener("click", (event) => {
     const button = event.target.closest("[data-topic]");
@@ -481,13 +615,15 @@ function bindEvents() {
 }
 
 async function init() {
-  const [modsResponse, bossesResponse] = await Promise.all([
+  const [modsResponse, bossesResponse, searchResponse] = await Promise.all([
     fetch("data/mods.json", { cache: "no-store" }),
     fetch("data/bosses.json", { cache: "no-store" }),
+    fetch("data/search-index.json", { cache: "no-store" }),
   ]);
   if (!modsResponse.ok) throw new Error("Could not load data/mods.json. Run npm run build:data first.");
   state.data = await modsResponse.json();
   state.bossData = bossesResponse.ok ? await bossesResponse.json() : {};
+  state.searchIndex = searchResponse.ok ? (await searchResponse.json()).entries || [] : [];
   renderStats();
   renderSelect();
   renderFilters();

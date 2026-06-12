@@ -7,8 +7,9 @@
     "build:data": "node scripts/build-data.js",
     "build:items": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/enrich-items.ps1",
     "build:split-items": "node scripts/split-items.js",
-    "build:all": "node scripts/build-data.js && powershell -NoProfile -ExecutionPolicy Bypass -File scripts/enrich-items.ps1 && node scripts/split-items.js",
+    "build:search": "node scripts/build-search-index.js",
+    "build:all": "node scripts/build-data.js && powershell -NoProfile -ExecutionPolicy Bypass -File scripts/enrich-items.ps1 && node scripts/split-items.js && node scripts/build-search-index.js",
     "serve": "node server.js",
-    "check": "node --check scripts/build-data.js && node --check server.js && node --check assets/app.js"
+    "check": "node --check scripts/build-data.js && node --check scripts/build-search-index.js && node --check server.js && node --check assets/app.js"
   }
 }
