@@ -293,9 +293,14 @@ function renderDrop(drop) {
   `;
 }
 
+function renderPhotoSource(source) {
+  return `<a class="photo-link" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(source.label || "Online photos")}</a>`;
+}
+
 function renderBossCard(boss) {
   const drops = asArray(boss.drops);
   const special = asArray(boss.special);
+  const photoSources = asArray(boss.photoSources);
   return `
     <article class="boss-card">
       <div class="boss-image-frame">
@@ -321,6 +326,15 @@ function renderBossCard(boss) {
               : ""
           }
         </dl>
+        ${
+          photoSources.length
+            ? `
+              <div class="photo-links">
+                ${photoSources.map(renderPhotoSource).join("")}
+              </div>
+            `
+            : ""
+        }
       </div>
     </article>
   `;

@@ -17,6 +17,12 @@
         ],
         "special": [
           "Piglich Heart is the important reward. Treat it as a progression ingredient, not a generic trophy drop."
+        ],
+        "photoSources": [
+          {
+            "label": "Online photos",
+            "url": "https://www.google.com/search?tbm=isch&q=Allthemodium+Piglich+Minecraft"
+          }
         ]
       }
     ]
@@ -43,6 +49,12 @@
         ],
         "special": [
           "The gauntlet is the special drop. Use JEI/EMI to compare it with the other Cataclysm gauntlets before building around it."
+        ],
+        "photoSources": [
+          {
+            "label": "Cataclysm wiki photos",
+            "url": "https://lendercataclysm.wiki.gg/wiki/Bosses"
+          }
         ]
       },
       {
@@ -68,6 +80,12 @@
         ],
         "special": [
           "Infernal Forge and Monstrous Horn are the important unique drops from this fight."
+        ],
+        "photoSources": [
+          {
+            "label": "Cataclysm wiki photos",
+            "url": "https://lendercataclysm.wiki.gg/wiki/Bosses"
+          }
         ]
       },
       {
@@ -89,6 +107,12 @@
         ],
         "special": [
           "Ignitium is the progression material. It feeds the armor/tool path rather than acting as a simple decoration."
+        ],
+        "photoSources": [
+          {
+            "label": "Cataclysm wiki photos",
+            "url": "https://lendercataclysm.wiki.gg/wiki/Bosses"
+          }
         ]
       },
       {
@@ -110,6 +134,12 @@
         ],
         "special": [
           "Witherite is the special reward chain. Break it down or use it in recipes as JEI/EMI indicates."
+        ],
+        "photoSources": [
+          {
+            "label": "Cataclysm wiki photos",
+            "url": "https://lendercataclysm.wiki.gg/wiki/Bosses"
+          }
         ]
       },
       {
@@ -135,6 +165,12 @@
         ],
         "special": [
           "Tidal Claws and Abyssal Egg are the special rewards; keep the fight in water so the boss can actually be damaged."
+        ],
+        "photoSources": [
+          {
+            "label": "Cataclysm wiki photos",
+            "url": "https://lendercataclysm.wiki.gg/wiki/Bosses"
+          }
         ]
       },
       {
@@ -160,6 +196,12 @@
         ],
         "special": [
           "Sandstorm in a Bottle is the signature special drop."
+        ],
+        "photoSources": [
+          {
+            "label": "Cataclysm wiki photos",
+            "url": "https://lendercataclysm.wiki.gg/wiki/Bosses"
+          }
         ]
       },
       {
@@ -185,6 +227,12 @@
         ],
         "special": [
           "The skull is the unique trophy; Ancient Metal is the practical crafting reward."
+        ],
+        "photoSources": [
+          {
+            "label": "Cataclysm wiki photos",
+            "url": "https://lendercataclysm.wiki.gg/wiki/Bosses"
+          }
         ]
       },
       {
@@ -206,6 +254,12 @@
         ],
         "special": [
           "Cursium is the special progression material from this fight."
+        ],
+        "photoSources": [
+          {
+            "label": "Cataclysm wiki photos",
+            "url": "https://lendercataclysm.wiki.gg/wiki/Bosses"
+          }
         ]
       },
       {
@@ -227,9 +281,16 @@
         ],
         "special": [
           "The installed loot table only shows common drops, so treat this as a dangerous structure encounter rather than a special loot boss."
+        ],
+        "photoSources": [
+          {
+            "label": "Cataclysm wiki photos",
+            "url": "https://lendercataclysm.wiki.gg/wiki/Bosses"
+          }
         ]
       }
-    ]
+    ],
+    "photoSource": "https://lendercataclysm.wiki.gg/wiki/Bosses"
   },
   "the-twilight-forest-227639": {
     "intro": "Twilight Forest bosses are usually progression gates. Follow the biome/structure order or the mod may apply progression protections.",
@@ -253,6 +314,12 @@
         ],
         "special": [
           "Naga Scales are the practical reward; the trophy marks completion."
+        ],
+        "photoSources": [
+          {
+            "label": "Twilight Forest wiki photos",
+            "url": "https://benimatic.com/tfwiki/index.php/Naga"
+          }
         ]
       },
       {
@@ -278,6 +345,12 @@
         ],
         "special": [
           "The scepter is the special drop; each scepter has a different active effect."
+        ],
+        "photoSources": [
+          {
+            "label": "Twilight Forest wiki photos",
+            "url": "https://benimatic.com/tfwiki/index.php/Twilight_Lich"
+          }
         ]
       },
       {
@@ -303,6 +376,12 @@
         ],
         "special": [
           "Meef Stroganoff is a progression item, not just food."
+        ],
+        "photoSources": [
+          {
+            "label": "Twilight Forest wiki photos",
+            "url": "https://benimatic.com/tfwiki/index.php/Minoshroom"
+          }
         ]
       },
       {
@@ -328,6 +407,12 @@
         ],
         "special": [
           "Fiery Blood is the key crafting reward for the Fiery gear path."
+        ],
+        "photoSources": [
+          {
+            "label": "Twilight Forest wiki photos",
+            "url": "https://benimatic.com/tfwiki/index.php/Hydra"
+          }
         ]
       },
       {
@@ -349,6 +434,12 @@
         ],
         "special": [
           "The Phantom armor pieces are the unique boss rewards."
+        ],
+        "photoSources": [
+          {
+            "label": "Twilight Forest wiki photos",
+            "url": "https://benimatic.com/tfwiki/index.php/Knight_Phantom"
+          }
         ]
       },
       {
@@ -374,6 +465,12 @@
         ],
         "special": [
           "Fiery Tears are the special crafting reward from the tower boss."
+        ],
+        "photoSources": [
+          {
+            "label": "Twilight Forest wiki photos",
+            "url": "https://benimatic.com/tfwiki/index.php/Ur-Ghast"
+          }
         ]
       },
       {
@@ -399,6 +496,12 @@
         ],
         "special": [
           "Alpha Yeti Fur is the progression material toward the Snow Queen path."
+        ],
+        "photoSources": [
+          {
+            "label": "Twilight Forest wiki photos",
+            "url": "https://benimatic.com/tfwiki/index.php/Alpha_Yeti"
+          }
         ]
       },
       {
@@ -424,9 +527,16 @@
         ],
         "special": [
           "The bow drop is the special reward; Seeker Bow and Tri-Bow play differently."
+        ],
+        "photoSources": [
+          {
+            "label": "Twilight Forest wiki photos",
+            "url": "https://benimatic.com/tfwiki/index.php/Snow_Queen"
+          }
         ]
       }
-    ]
+    ],
+    "photoSource": "https://twilightforest.fandom.com/wiki/Twilight_Forest_Bosses"
   },
   "the-aether-255308": {
     "intro": "Aether bosses are tied to Bronze, Silver, and Gold dungeon structures in the Aether dimension.",
@@ -450,6 +560,12 @@
         ],
         "special": [
           "The key is the actual boss reward because it unlocks the treasure chest."
+        ],
+        "photoSources": [
+          {
+            "label": "Aether wiki photos",
+            "url": "https://aether.fandom.com/wiki/Slider"
+          }
         ]
       },
       {
@@ -471,6 +587,12 @@
         ],
         "special": [
           "The Silver Dungeon Key unlocks the real loot chest after the fight."
+        ],
+        "photoSources": [
+          {
+            "label": "Aether wiki photos",
+            "url": "https://aether.fandom.com/wiki/Valkyrie_Queen"
+          }
         ]
       },
       {
@@ -492,9 +614,16 @@
         ],
         "special": [
           "The Gold Dungeon Key is the progression reward; use it on the dungeon chest."
+        ],
+        "photoSources": [
+          {
+            "label": "Aether wiki photos",
+            "url": "https://aether.fandom.com/wiki/Sun_Spirit"
+          }
         ]
       }
-    ]
+    ],
+    "photoSource": "https://aether.fandom.com/wiki/Category:Bosses"
   },
   "deeper-and-darker-659011": {
     "intro": "Deeper and Darker has one major named boss-style encounter in the installed loot tables.",
@@ -514,9 +643,16 @@
         ],
         "special": [
           "Soul Crystal is the important drop from the installed entity loot table."
+        ],
+        "photoSources": [
+          {
+            "label": "Minecraft Guides photos",
+            "url": "https://www.minecraft-guides.com/wiki/deeper-and-darker/stalker/"
+          }
         ]
       }
-    ]
+    ],
+    "photoSource": "https://www.minecraft-guides.com/wiki/deeper-and-darker/stalker/"
   },
   "the-undergarden-379849": {
     "intro": "The Undergarden's boss progression centers on the Forgotten Guardian.",
@@ -536,9 +672,16 @@
         ],
         "special": [
           "Forgotten metal upgrades Cloggrum tools and supports the Forgotten equipment path."
+        ],
+        "photoSources": [
+          {
+            "label": "Undergarden wiki photos",
+            "url": "https://the-undergarden-mod.fandom.com/wiki/Forgotten_Guardian"
+          }
         ]
       }
-    ]
+    ],
+    "photoSource": "https://the-undergarden-mod.fandom.com/wiki/Forgotten_Guardian"
   },
   "eternal-starlight-1080592": {
     "intro": "Eternal Starlight uses dimension structures and its in-game book for boss guidance. The structures below are present in the installed worldgen data.",
@@ -558,6 +701,12 @@
         ],
         "special": [
           "This is a progression encounter more than a normal loot pinata; talk to the Gatekeeper after winning."
+        ],
+        "photoSources": [
+          {
+            "label": "Minecraft Guides photos",
+            "url": "https://www.minecraft-guides.com/wiki/eternal-starlight/bosses/gatekeeper/"
+          }
         ]
       },
       {
@@ -575,6 +724,12 @@
         ],
         "special": [
           "Its special mechanic is defensive armor: disable the energy support when it exposes the weakness."
+        ],
+        "photoSources": [
+          {
+            "label": "Minecraft Guides photos",
+            "url": "https://www.minecraft-guides.com/wiki/eternal-starlight/bosses/starlight-golem/"
+          }
         ]
       },
       {
@@ -592,9 +747,16 @@
         ],
         "special": [
           "The important mechanic is its damage reduction. Ignite or stun it before spending your strongest attacks."
+        ],
+        "photoSources": [
+          {
+            "label": "Minecraft Guides photos",
+            "url": "https://www.minecraft-guides.com/wiki/eternal-starlight/bosses/lunar-monstrosity/"
+          }
         ]
       }
-    ]
+    ],
+    "photoSource": "https://www.minecraft-guides.com/wiki/eternal-starlight/"
   },
   "the-bumblezone-neoforge-forge-362479": {
     "intro": "Bumblezone's Queen is more quest/trade encounter than normal boss. The installed loot table exists, but the useful rewards come from interacting with her systems.",
@@ -618,9 +780,16 @@
         ],
         "special": [
           "The Queen can request items and grant bonus trade rewards. Killing her is usually less useful than completing her interaction loop."
+        ],
+        "photoSources": [
+          {
+            "label": "Modrinth gallery photos",
+            "url": "https://modrinth.com/mod/the-bumblezone/gallery"
+          }
         ]
       }
-    ]
+    ],
+    "photoSource": "https://modrinth.com/mod/the-bumblezone/gallery"
   },
   "iceandfire-community-edition-1040076": {
     "intro": "Ice and Fire adds dangerous world bosses and boss-like legendary creatures. Loot varies by age, type, and sex for dragons.",
@@ -648,6 +817,12 @@
         ],
         "special": [
           "Eggs are the special rare drop and only come from female dragons in the relevant loot table."
+        ],
+        "photoSources": [
+          {
+            "label": "Ice and Fire wiki photos",
+            "url": "https://ice-and-fire-mod.fandom.com/wiki/Fire_Dragon"
+          }
         ]
       },
       {
@@ -673,6 +848,12 @@
         ],
         "special": [
           "Dragon scales and eggs define the Ice and Fire progression loop."
+        ],
+        "photoSources": [
+          {
+            "label": "Ice and Fire wiki photos",
+            "url": "https://ice-and-fire-mod.fandom.com/wiki/Ice_Dragon"
+          }
         ]
       },
       {
@@ -698,6 +879,12 @@
         ],
         "special": [
           "Lightning Dragon Eggs and scales are the special rewards."
+        ],
+        "photoSources": [
+          {
+            "label": "Ice and Fire wiki photos",
+            "url": "https://ice-and-fire-mod.fandom.com/wiki/Lightning_Dragon"
+          }
         ]
       },
       {
@@ -723,6 +910,12 @@
         ],
         "special": [
           "Eye of Cyclops is the unique reward to keep."
+        ],
+        "photoSources": [
+          {
+            "label": "Ice and Fire wiki photos",
+            "url": "https://ice-and-fire-mod.fandom.com/wiki/Cyclops"
+          }
         ]
       },
       {
@@ -740,6 +933,12 @@
         ],
         "special": [
           "Gorgon Head is the special drop. Save it for a high-value target because its use is limited."
+        ],
+        "photoSources": [
+          {
+            "label": "Ice and Fire wiki photos",
+            "url": "https://ice-and-fire-mod.fandom.com/wiki/Gorgon"
+          }
         ]
       },
       {
@@ -765,9 +964,16 @@
         ],
         "special": [
           "Hydra Heart is the important special drop."
+        ],
+        "photoSources": [
+          {
+            "label": "Ice and Fire wiki photos",
+            "url": "https://ice-and-fire-mod.fandom.com/wiki/Hydra"
+          }
         ]
       }
-    ]
+    ],
+    "photoSource": "https://ice-and-fire-mod.fandom.com/wiki/Creatures"
   },
   "irons-spells-n-spellbooks-855414": {
     "intro": "Iron's Spells boss encounters unlock magic gear, spell books, and high-tier spell materials.",
@@ -795,6 +1001,12 @@
         ],
         "special": [
           "Blood Staff and Necronomicon are the special magic rewards."
+        ],
+        "photoSources": [
+          {
+            "label": "Iron's Spells photos",
+            "url": "https://www.google.com/search?tbm=isch&q=Iron%27s+Spells+The+Dead+King+Minecraft"
+          }
         ]
       },
       {
@@ -820,6 +1032,12 @@
         ],
         "special": [
           "Divine Soulshard and the unique gear drops are the major reasons to fight Tyros."
+        ],
+        "photoSources": [
+          {
+            "label": "Iron's Spells photos",
+            "url": "https://www.google.com/search?tbm=isch&q=Iron%27s+Spells+Echo+of+Tyros+First+Flamebearer"
+          }
         ]
       }
     ]
