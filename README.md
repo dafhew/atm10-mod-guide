@@ -17,7 +17,7 @@ Friends on the same network can try `http://YOUR-PC-IP:4173`. For friends outsid
 
 ## Server Map Coordinates
 
-The home page seed map reads `data/server-map.json`. The seed and dimensions are configured there. The committed coordinates are deterministic, unverified estimates generated from the seed so the map is immediately usable as a starting point. Replace or add `locations` after scanning the generated world or recording `/locate` results.
+The home page seed map reads `data/server-map.json`. The seed, dimensions, and overview bounds are configured there. The committed map is a movable full-overview map with deterministic, unverified estimate coordinates generated from the seed so it is immediately usable as a starting point. Replace or add `locations` after scanning the generated world or recording `/locate` results.
 
 Example location:
 

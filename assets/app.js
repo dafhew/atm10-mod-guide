@@ -399,6 +399,11 @@ function coordText(location) {
   return `${Number(location.x)}, ${y}, ${Number(location.z)}`;
 }
 
+function selectedMapDimension() {
+  const id = elements.mapDimension?.value;
+  return asArray(state.serverMap?.dimensions).find((dimension) => dimension.id === id) || null;
+}
+
 function mapLocations() {
   if (!state.serverMap) return [];
   const dimension = elements.mapDimension?.value;
@@ -411,6 +416,79 @@ function mapLocations() {
       return [location.name, location.id, location.notes, location.confidence, location.ore, location.structure].join(" ").toLowerCase().includes(query);
     })
     .sort((a, b) => String(a.name || a.id).localeCompare(String(b.name || b.id)));
+}
+
+function mapBounds(locations) {
+  const dimension = selectedMapDimension();
+  if (dimension?.bounds) {
+    return {
+      minX: Number(dimension.bounds.minX),
+      maxX: Number(dimension.bounds.maxX),
+      minZ: Number(dimension.bounds.minZ),
+      maxZ: Number(dimension.bounds.maxZ),
+      label: dimension.bounds.label || "Full seed overview",
+    };
+  }
+  const xs = locations.map((location) => Number(location.x));
+  const zs = locations.map((location) => Number(location.z));
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minZ = Math.min(...zs);
+  const maxZ = Math.max(...zs);
+  return { minX, maxX, minZ, maxZ, label: "Marker bounds" };
+}
+
+function hashString(value) {
+  let hash = 2166136261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function seededUnit(value) {
+  let hash = hashString(value);
+  hash = Math.imul(hash ^ (hash >>> 15), 2246822507);
+  hash = Math.imul(hash ^ (hash >>> 13), 3266489909);
+  hash ^= hash >>> 16;
+  return (hash >>> 0) / 4294967296;
+}
+
+function terrainClass(dimensionId, column, row) {
+  if (dimensionId.includes("nether")) return seededUnit(`${dimensionId}:${column}:${row}`) > 0.72 ? "lava" : "nether";
+  if (dimensionId.includes("end") || dimensionId.includes("beyond")) return seededUnit(`${dimensionId}:${column}:${row}`) > 0.78 ? "void" : "end";
+  if (dimensionId.includes("aether")) return seededUnit(`${dimensionId}:${column}:${row}`) > 0.68 ? "cloud" : "aether";
+  if (dimensionId.includes("bumblezone")) return seededUnit(`${dimensionId}:${column}:${row}`) > 0.5 ? "honey" : "hive";
+  if (dimensionId.includes("undergarden") || dimensionId.includes("otherside")) return seededUnit(`${dimensionId}:${column}:${row}`) > 0.65 ? "sculk" : "deep";
+  const value = seededUnit(`${dimensionId}:${column}:${row}`);
+  if (value < 0.14) return "water";
+  if (value < 0.24) return "sand";
+  if (value < 0.42) return "forest";
+  if (value < 0.56) return "plains";
+  if (value < 0.7) return "mountain";
+  if (value < 0.82) return "swamp";
+  return "snow";
+}
+
+function renderTerrainTiles(bounds, dimensionId) {
+  const columns = 28;
+  const rows = 28;
+  const width = 100 / columns;
+  const height = 100 / rows;
+  const tiles = [];
+  for (let row = 0; row < rows; row += 1) {
+    for (let column = 0; column < columns; column += 1) {
+      const terrain = terrainClass(dimensionId, column, row);
+      tiles.push(
+        `<span class="map-tile ${terrain}" style="left:${column * width}%;top:${row * height}%;width:${width}%;height:${height}%" aria-hidden="true"></span>`
+      );
+    }
+  }
+  return `
+    <div class="map-terrain" aria-hidden="true">${tiles.join("")}</div>
+    <div class="map-origin" style="left:${((-bounds.minX) / Math.max(1, bounds.maxX - bounds.minX)) * 100}%;top:${((-bounds.minZ) / Math.max(1, bounds.maxZ - bounds.minZ)) * 100}%"></div>
+  `;
 }
 
 function applyMapView() {
@@ -456,12 +534,13 @@ function renderSeedMap() {
     return;
   }
 
-  elements.seedMapMeta.textContent = `Seed ${map.seed} | ATM10 ${map.packVersion} | ${map.minecraftVersion} | ${map.worldType} world`;
   if (!elements.mapDimension.options.length) {
     elements.mapDimension.innerHTML = asArray(map.dimensions)
       .map((dimension) => `<option value="${escapeHtml(dimension.id)}">${escapeHtml(dimension.name)}</option>`)
       .join("");
   }
+  const selectedDimension = selectedMapDimension();
+  elements.seedMapMeta.textContent = `Seed ${map.seed} | ${selectedDimension?.name || "Dimension"} full overview | ATM10 ${map.packVersion}`;
 
   const locations = mapLocations();
   if (!locations.length) {
@@ -481,20 +560,16 @@ function renderSeedMap() {
     return;
   }
 
-  const xs = locations.map((location) => Number(location.x));
-  const zs = locations.map((location) => Number(location.z));
-  const minX = Math.min(...xs);
-  const maxX = Math.max(...xs);
-  const minZ = Math.min(...zs);
-  const maxZ = Math.max(...zs);
+  const { minX, maxX, minZ, maxZ, label } = mapBounds(locations);
   const spanX = Math.max(1, maxX - minX);
   const spanZ = Math.max(1, maxZ - minZ);
 
   elements.seedMapCanvas.innerHTML = `
     <div class="seed-map-world">
-      <div class="map-terrain" aria-hidden="true"></div>
+      ${renderTerrainTiles({ minX, maxX, minZ, maxZ }, selectedDimension?.id || "minecraft:overworld")}
       <div class="map-axis x-axis">X ${escapeHtml(minX)} to ${escapeHtml(maxX)}</div>
       <div class="map-axis z-axis">Z ${escapeHtml(minZ)} to ${escapeHtml(maxZ)}</div>
+      <div class="map-axis bounds-axis">${escapeHtml(label)}</div>
       ${locations
         .map((location) => {
           const left = ((Number(location.x) - minX) / spanX) * 86 + 7;

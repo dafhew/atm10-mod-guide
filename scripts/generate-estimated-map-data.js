@@ -7,6 +7,7 @@ const map = JSON.parse(fs.readFileSync(filePath, "utf8"));
 const dimensionProfiles = {
   "minecraft:overworld": {
     radius: 6500,
+    mapRadius: 12000,
     structures: ["Village", "Ancient City", "Trial Chambers", "Stronghold", "Woodland Mansion", "Ocean Monument"],
     ores: [
       ["Diamond Ore", -58],
@@ -19,6 +20,7 @@ const dimensionProfiles = {
   },
   "minecraft:the_nether": {
     radius: 2200,
+    mapRadius: 5000,
     structures: ["Nether Fortress", "Bastion Remnant", "Ruined Portal", "Nether Fossil"],
     ores: [
       ["Ancient Debris", 15],
@@ -29,6 +31,7 @@ const dimensionProfiles = {
   },
   "minecraft:the_end": {
     radius: 7000,
+    mapRadius: 14000,
     structures: ["End City", "End Gateway", "Obsidian Platform"],
     ores: [
       ["Unobtainium Ore Candidate", 48],
@@ -38,6 +41,7 @@ const dimensionProfiles = {
   },
   "allthemodium:mining": {
     radius: 5000,
+    mapRadius: 10000,
     structures: ["Mining Outpost Candidate", "Cave Hub Candidate", "Geode Cluster Candidate"],
     ores: [
       ["Allthemodium Ore", -45],
@@ -49,6 +53,7 @@ const dimensionProfiles = {
   },
   "allthemodium:the_other": {
     radius: 5200,
+    mapRadius: 10000,
     structures: ["Pyramid Candidate", "Dungeon Candidate", "Ancient Ruins Candidate"],
     ores: [
       ["Vibranium Ore", 35],
@@ -58,6 +63,7 @@ const dimensionProfiles = {
   },
   "allthemodium:the_beyond": {
     radius: 5200,
+    mapRadius: 10000,
     structures: ["Beyond Island Candidate", "Endgame Ruins Candidate", "Void Structure Candidate"],
     ores: [
       ["Unobtainium Ore Candidate", 50],
@@ -67,6 +73,7 @@ const dimensionProfiles = {
   },
   "twilightforest:twilight_forest": {
     radius: 4600,
+    mapRadius: 9000,
     structures: ["Naga Courtyard", "Lich Tower", "Minoshroom Labyrinth", "Hydra Lair", "Ur-Ghast Tower"],
     ores: [
       ["Ironwood Material Cluster", 32],
@@ -76,6 +83,7 @@ const dimensionProfiles = {
   },
   "aether:the_aether": {
     radius: 4600,
+    mapRadius: 9000,
     structures: ["Bronze Dungeon", "Silver Dungeon", "Gold Dungeon"],
     ores: [
       ["Ambrosium Ore", 40],
@@ -85,6 +93,7 @@ const dimensionProfiles = {
   },
   "undergarden:undergarden": {
     radius: 4600,
+    mapRadius: 9000,
     structures: ["Undergarden Ruins Candidate", "Catacomb Candidate", "Gloomper Nest Candidate"],
     ores: [
       ["Cloggrum Ore", 28],
@@ -94,6 +103,7 @@ const dimensionProfiles = {
   },
   "the_bumblezone:the_bumblezone": {
     radius: 3600,
+    mapRadius: 7000,
     structures: ["Honeycomb Cell Candidate", "Bee Dungeon Candidate", "Honey Crystal Area"],
     ores: [
       ["Honey Crystal Cluster", 64],
@@ -103,6 +113,7 @@ const dimensionProfiles = {
   },
   "deeperdarker:otherside": {
     radius: 4200,
+    mapRadius: 8500,
     structures: ["Ancient Temple Candidate", "Sculk Ruins Candidate", "Warden Area Candidate"],
     ores: [
       ["Warden Carapace Area", -20],
@@ -112,6 +123,7 @@ const dimensionProfiles = {
   },
   "eternal_starlight:starlight": {
     radius: 4600,
+    mapRadius: 9000,
     structures: ["Starlight Tower Candidate", "Lunar Ruins Candidate", "Starlight Dungeon Candidate"],
     ores: [
       ["Starlight Ore Cluster", 34],
@@ -157,6 +169,14 @@ const locations = [];
 for (const dimension of map.dimensions || []) {
   const profile = dimensionProfiles[dimension.id];
   if (!profile) continue;
+  const mapRadius = profile.mapRadius || Math.round(profile.radius * 1.8);
+  dimension.bounds = {
+    minX: -mapRadius,
+    maxX: mapRadius,
+    minZ: -mapRadius,
+    maxZ: mapRadius,
+    label: `Unverified full-seed overview area for ${dimension.name}`,
+  };
 
   for (const [index, name] of profile.structures.entries()) {
     for (let candidate = 0; candidate < 2; candidate += 1) {

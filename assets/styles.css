@@ -567,30 +567,86 @@ button:focus,
 .map-terrain {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 16% 18%, rgba(105, 178, 82, 0.96) 0 7%, transparent 7.5%),
-    radial-gradient(circle at 78% 22%, rgba(85, 143, 72, 0.96) 0 10%, transparent 10.5%),
-    radial-gradient(circle at 28% 82%, rgba(54, 113, 62, 0.98) 0 12%, transparent 12.5%),
-    radial-gradient(circle at 72% 76%, rgba(197, 183, 110, 0.94) 0 9%, transparent 9.5%),
-    radial-gradient(circle at 51% 47%, rgba(70, 136, 189, 0.9) 0 8%, transparent 8.5%),
-    linear-gradient(32deg, transparent 0 28%, rgba(65, 119, 176, 0.78) 28% 34%, transparent 34% 100%),
-    linear-gradient(126deg, transparent 0 48%, rgba(70, 136, 189, 0.68) 48% 54%, transparent 54% 100%),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 32px),
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.09) 0 1px, transparent 1px 32px),
-    linear-gradient(135deg, #5f9d55 0 22%, #487f43 22% 38%, #8a8b55 38% 50%, #3d7f58 50% 66%, #7aa35c 66% 82%, #465f3e 82% 100%);
   image-rendering: pixelated;
 }
 
-.map-terrain::after {
-  content: "";
+.map-tile {
   position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(90deg, rgba(18, 29, 20, 0.32) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(18, 29, 20, 0.32) 1px, transparent 1px);
-  background-size: 16px 16px;
-  mix-blend-mode: multiply;
-  opacity: 0.42;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.map-tile.water {
+  background: #327ab7;
+}
+
+.map-tile.sand {
+  background: #c8b96f;
+}
+
+.map-tile.forest {
+  background: #2f6f35;
+}
+
+.map-tile.plains {
+  background: #66a65b;
+}
+
+.map-tile.mountain {
+  background: #747c6b;
+}
+
+.map-tile.swamp {
+  background: #42684f;
+}
+
+.map-tile.snow,
+.map-tile.cloud {
+  background: #d6e1d9;
+}
+
+.map-tile.nether {
+  background: #6f2d2d;
+}
+
+.map-tile.lava {
+  background: #d46c27;
+}
+
+.map-tile.end,
+.map-tile.aether {
+  background: #b7b37a;
+}
+
+.map-tile.void {
+  background: #1d1831;
+}
+
+.map-tile.honey {
+  background: #d6a931;
+}
+
+.map-tile.hive {
+  background: #8c6f2d;
+}
+
+.map-tile.sculk {
+  background: #143a3d;
+}
+
+.map-tile.deep {
+  background: #2f3b37;
+}
+
+.map-origin {
+  position: absolute;
+  z-index: 2;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: rgba(185, 77, 62, 0.9);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.45);
 }
 
 .map-empty {
@@ -629,6 +685,11 @@ button:focus,
 
 .z-axis {
   left: 12px;
+  bottom: 10px;
+}
+
+.bounds-axis {
+  right: 12px;
   bottom: 10px;
 }
 

@@ -5,68 +5,152 @@
   "minecraftVersion": "1.21.1",
   "loader": "NeoForge",
   "worldType": "default",
-  "generatedAt": "2026-06-12T17:10:05.391Z",
+  "generatedAt": "2026-06-12T17:59:27.402Z",
   "status": "This map is populated with deterministic, unverified estimate coordinates from the server seed. Confirm structures and ores in game before relying on them.",
   "dimensions": [
     {
       "id": "minecraft:overworld",
       "name": "Overworld",
-      "scale": 1
+      "scale": 1,
+      "bounds": {
+        "minX": -12000,
+        "maxX": 12000,
+        "minZ": -12000,
+        "maxZ": 12000,
+        "label": "Unverified full-seed overview area for Overworld"
+      }
     },
     {
       "id": "minecraft:the_nether",
       "name": "Nether",
-      "scale": 8
+      "scale": 8,
+      "bounds": {
+        "minX": -5000,
+        "maxX": 5000,
+        "minZ": -5000,
+        "maxZ": 5000,
+        "label": "Unverified full-seed overview area for Nether"
+      }
     },
     {
       "id": "minecraft:the_end",
       "name": "The End",
-      "scale": 1
+      "scale": 1,
+      "bounds": {
+        "minX": -14000,
+        "maxX": 14000,
+        "minZ": -14000,
+        "maxZ": 14000,
+        "label": "Unverified full-seed overview area for The End"
+      }
     },
     {
       "id": "allthemodium:mining",
       "name": "Mining Dimension",
-      "scale": 1
+      "scale": 1,
+      "bounds": {
+        "minX": -10000,
+        "maxX": 10000,
+        "minZ": -10000,
+        "maxZ": 10000,
+        "label": "Unverified full-seed overview area for Mining Dimension"
+      }
     },
     {
       "id": "allthemodium:the_other",
       "name": "The Other",
-      "scale": 1
+      "scale": 1,
+      "bounds": {
+        "minX": -10000,
+        "maxX": 10000,
+        "minZ": -10000,
+        "maxZ": 10000,
+        "label": "Unverified full-seed overview area for The Other"
+      }
     },
     {
       "id": "allthemodium:the_beyond",
       "name": "The Beyond",
-      "scale": 1
+      "scale": 1,
+      "bounds": {
+        "minX": -10000,
+        "maxX": 10000,
+        "minZ": -10000,
+        "maxZ": 10000,
+        "label": "Unverified full-seed overview area for The Beyond"
+      }
     },
     {
       "id": "twilightforest:twilight_forest",
       "name": "Twilight Forest",
-      "scale": 1
+      "scale": 1,
+      "bounds": {
+        "minX": -9000,
+        "maxX": 9000,
+        "minZ": -9000,
+        "maxZ": 9000,
+        "label": "Unverified full-seed overview area for Twilight Forest"
+      }
     },
     {
       "id": "aether:the_aether",
       "name": "The Aether",
-      "scale": 1
+      "scale": 1,
+      "bounds": {
+        "minX": -9000,
+        "maxX": 9000,
+        "minZ": -9000,
+        "maxZ": 9000,
+        "label": "Unverified full-seed overview area for The Aether"
+      }
     },
     {
       "id": "undergarden:undergarden",
       "name": "The Undergarden",
-      "scale": 1
+      "scale": 1,
+      "bounds": {
+        "minX": -9000,
+        "maxX": 9000,
+        "minZ": -9000,
+        "maxZ": 9000,
+        "label": "Unverified full-seed overview area for The Undergarden"
+      }
     },
     {
       "id": "the_bumblezone:the_bumblezone",
       "name": "The Bumblezone",
-      "scale": 1
+      "scale": 1,
+      "bounds": {
+        "minX": -7000,
+        "maxX": 7000,
+        "minZ": -7000,
+        "maxZ": 7000,
+        "label": "Unverified full-seed overview area for The Bumblezone"
+      }
     },
     {
       "id": "deeperdarker:otherside",
       "name": "Otherside",
-      "scale": 1
+      "scale": 1,
+      "bounds": {
+        "minX": -8500,
+        "maxX": 8500,
+        "minZ": -8500,
+        "maxZ": 8500,
+        "label": "Unverified full-seed overview area for Otherside"
+      }
     },
     {
       "id": "eternal_starlight:starlight",
       "name": "Eternal Starlight",
-      "scale": 1
+      "scale": 1,
+      "bounds": {
+        "minX": -9000,
+        "maxX": 9000,
+        "minZ": -9000,
+        "maxZ": 9000,
+        "label": "Unverified full-seed overview area for Eternal Starlight"
+      }
     }
   ],
   "locations": [
